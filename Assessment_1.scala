@@ -42,3 +42,18 @@ val bird = "tweet"
 val imprimir = s"Estoy escribiendo un ${bird}"
 println(imprimir)
 println("")
+
+//4. Given the variable message = "Hola Luke yo soy tu padre" use slilce to extract the
+//sequence "Luke"
+val message = "Hola Luke yo soy tu padre"
+message slice (5,9)
+
+//5. What is the difference between value and a variable in scala?
+// Value: Used to assign an immutable value (which cannot be changed, static)
+// Variable: The value assigned can change
+
+ 
+// 6. Given the tuple ((2,4,5), (1,2,3), (3,114,23))) return the number 3.1416
+val tuple =((2,4,5),(1,2,3),(3.1416,23))
+tuple ._3._1
+
