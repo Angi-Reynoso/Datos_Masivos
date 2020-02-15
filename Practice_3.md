@@ -1,20 +1,21 @@
-#The Fibonacci sequence
+# The Fibonacci sequence
 The Fibonacci sequence, sometimes also known as the Fibonacci sequence or incorrectly as the Fibonacci series, is itself an infinite mathematical sequence. Constant of a series of natural numbers that add up to 2, from 0 and 1. Basically, the 
 Fibonacci sequence is done by always adding the last 2 numbers (All the numbers present in the sequence are called the 
-Fibonacci numbers) of as follows:
-0,1,1,2,3,5,8,13,21,34 ...
+Fibonacci numbers) of as follows: <br>
+0,1,1,2,3,5,8,13,21,34 ...<br>
 Therefore in the following practice the development of the 6 fibonacci algorithms will be carried out.
 
-package math
-This package contains methods for performing basic numeric operations such as elementary exponential, logarithmic, root and trigonometric functions.
+`package math`  
+This package contains methods for performing basic numeric operations such as elementary exponential, logarithmic, root and trigonometric functions.  
 To make use of any of the methods in this package it is necessary to put "math." first, and then the name designated for the method; for example for square root "sqrt" is used.
 
-import util.control.Breaks._
+`import util.control.Breaks._`  
 Scale library that allows you to stop a cycle while.
 
-// 1st Algorithm: Recursive version descending
-def algorithm1(n: Int): Int = 
---description--
+// 1st Algorithm: Recursive version descending  
+~~~~
+def algorithm1(n: Int): Int =  
+--description--  
 {   
     if (n<2)
     {
@@ -26,11 +27,13 @@ def algorithm1(n: Int): Int =
     }
 }
 println(algorithm1(1))
---description--
+--description--  
+~~~~
 
-// 2nd Algorithm: Version with explicit formula 
-def algorithm2(n: Double): Double = 
---description--
+// 2nd Algorithm: Version with explicit formula  
+~~~~
+def algorithm2(n: Double): Double =  
+--description--  
 {   
     if (n<2)
     {
@@ -39,16 +42,18 @@ def algorithm2(n: Double): Double =
     else
     {
         var phi = ((1 + math.sqrt(5)) / 2)
-        --math.sqrt: Returns the square root of a Double value.--
+        --math.sqrt: Returns the square root of a Double value.--  
         var j = ((math.pow(phi,n) - math.pow((1 - phi),n)) / (math.sqrt(5)))
-        --math.pow: Returns the value of the first argument raised to the power of the second argument.--
+        --math.pow: Returns the value of the first argument raised to the power of the second argument.--  
         return j
     }
 }
 println(algorithm2(2))
+~~~~
 
 
-// 3rd Algorithm: Iterative version
+// 3rd Algorithm: Iterative version  
+~~~~
 def algorithm3 (n: Int): Int =
 {
 var a = 0
@@ -62,12 +67,14 @@ var c = 0
         b = c
     }
     return(a)
-    --description--
+    --description-- 
 }
-println(algorithm3(3))
+println(algorithm3(3))  
+~~~~
 
 
-// 4th Algorithm: Iterative version-2 variables
+// 4th Algorithm: Iterative version-2 variables  
+~~~~
 def algorithm4(n: Int): Int =
 {
     var a = 0
@@ -80,8 +87,11 @@ def algorithm4(n: Int): Int =
         return(a)
 }
 println(algorithm4(3))
+~~~~
 
-// 5th Algorithm: Iterative vector version
+
+// 5th Algorithm: Iterative vector version  
+~~~~
 def algorithm5(n: Int): Int = 
 {   
     if (n<2)
@@ -91,10 +101,10 @@ def algorithm5(n: Int): Int =
     else
     {
         val arr = Array.range(0, n+2)
-        --description--
+        --description--  
         arr(0) = 0
         arr(1) = 1
-        --description--
+        --description--  
         for(k <- 2 to n+1)
         {
             arr(k) = arr(k-1) + arr(k-2)
@@ -103,9 +113,11 @@ def algorithm5(n: Int): Int =
     }
 }
 println(algorithm5(5))
+~~~~
 
 
-//6th Algorithm: Version Divide and Conquer
+//6th Algorithm: Version Divide and Conquer  
+~~~~
 def algorithm6(n: Int): Int = 
 {   
     if (n<=0)
@@ -118,7 +130,6 @@ def algorithm6(n: Int): Int =
     var c = 0
     var d = 1
     var t = 0
-
     while(i > 0){
         if (i % 2 == 1)
         {
@@ -131,7 +142,8 @@ def algorithm6(n: Int): Int =
         d = t
         i = i/2
     }
-    return a + b
-    --description--
+    return a + b  
+    --description--  
 }
 println(algorithm6(6))
+~~~~
