@@ -1,21 +1,27 @@
-# The Fibonacci sequence
+## The Fibonacci sequence 
+
 The Fibonacci sequence, sometimes also known as the Fibonacci sequence or incorrectly as the Fibonacci series, is itself an infinite mathematical sequence. Constant of a series of natural numbers that add up to 2, from 0 and 1. Basically, the 
 Fibonacci sequence is done by always adding the last 2 numbers (All the numbers present in the sequence are called the 
 Fibonacci numbers) of as follows: <br>
 0,1,1,2,3,5,8,13,21,34 ...<br>
+
 Therefore in the following practice the development of the 6 fibonacci algorithms will be carried out.
 
-`package math`  
 This package contains methods for performing basic numeric operations such as elementary exponential, logarithmic, root and trigonometric functions.  
 To make use of any of the methods in this package it is necessary to put "math." first, and then the name designated for the method; for example for square root "sqrt" is used.
+`package math`  
 
-`import util.control.Breaks._`  
 Scale library that allows you to stop a cycle while.
+`import util.control.Breaks._` 
 
-// 1st Algorithm: Recursive version descending  
+**1st Algorithm: Recursive version descending**
 ~~~~
-def algorithm1(n: Int): Int =  
+def algorithm1(n: Int): Int =
 --description--  
+If the number entered in the function is less than 2, the number entered will be returned to n
+In any case that is greater than 2, the function will perform a series of operations, 
+and return the result depending on the number entered
+
 {   
     if (n<2)
     {
@@ -27,10 +33,9 @@ def algorithm1(n: Int): Int =
     }
 }
 println(algorithm1(1))
---description--  
 ~~~~
 
-// 2nd Algorithm: Version with explicit formula  
+**2nd Algorithm: Version with explicit formula**
 ~~~~
 def algorithm2(n: Double): Double =  
 --description--  
@@ -51,8 +56,7 @@ def algorithm2(n: Double): Double =
 println(algorithm2(2))
 ~~~~
 
-
-// 3rd Algorithm: Iterative version  
+**3rd Algorithm: Iterative version**
 ~~~~
 def algorithm3 (n: Int): Int =
 {
@@ -73,7 +77,7 @@ println(algorithm3(3))
 ~~~~
 
 
-// 4th Algorithm: Iterative version-2 variables  
+**4th Algorithm: Iterative version-2 variables** 
 ~~~~
 def algorithm4(n: Int): Int =
 {
@@ -90,7 +94,7 @@ println(algorithm4(3))
 ~~~~
 
 
-// 5th Algorithm: Iterative vector version  
+**5th Algorithm: Iterative vector version** 
 ~~~~
 def algorithm5(n: Int): Int = 
 {   
@@ -116,7 +120,7 @@ println(algorithm5(5))
 ~~~~
 
 
-//6th Algorithm: Version Divide and Conquer  
+**6th Algorithm: Version Divide and Conquer**  
 ~~~~
 def algorithm6(n: Int): Int = 
 {   
