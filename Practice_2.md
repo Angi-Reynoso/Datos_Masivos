@@ -40,7 +40,7 @@ val list = List(1,3,3,4,6,7,3,7)
 list.toSet
 ~~~
 ### Solution 6:
-"Map# is a collection of key-value pairs. In other words, it is similar to dictionary.  
+"Map" is a collection of key-value pairs. In other words, it is similar to dictionary.  
 Keys are always unique while values need not be unique.  
 Key-value pairs can have any data type. However, data type once used for any key and value must be consistent throughout.  
 Maps are classified into two types: mutable and immutable.  
