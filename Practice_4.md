@@ -30,35 +30,32 @@ Returns the sum of all values in the given column.
 10. `def kurtosis(columnName: String): Column`  
 Returns the kurtosis of the values in a group.  
 
-11. `def grouping(columnName: String): Column`  
-Indicates whether a specified column in a GROUP BY list is aggregated or not, returns 1 for aggregated or 0 for not 
-aggregated in the result set.  
+11. `def countDistinct(columnName: String, columnNames: String*): Column`  
+Aggregate function: returns the number of distinct items in a group.  
 
 12. `def mean(columnName: String): Column`  
 Returns the average of the values in a group.  
 
-13. `def array_distinct(e: Column): Column`  
-Removes duplicate values from the array.  
+13. `def var_pop(columnName: String): Column`  
+Returns the population variance of the values in a group.  
 
 14. `def concat(exprs: Column*): Column`  
 Concatenates multiple input columns together into a single column.  
 
-15. `def explode(e: Column): Column`  
-Creates a new row for each element in the given array or map column.  
-
-16. `def reverse(e: Column): Column`  
+15. `def reverse(e: Column): Column`  
 Returns a reversed string or an array with reverse order of elements.  
 
-17. `def size(e: Column): Column`  
-Returns length of array or map.  
-
-18. `def current_date(): Column`  
+16. `def current_date(): Column`  
 Returns the current date as a date column.  
 
-19. `def greatest(exprs: Column*): Column`  
-Returns the greatest value of the list of values, skipping null values. This function takes at least 2 parameters. 
-It will return null iff all parameters are null.  
+17. `def dayofmonth(e: Column): Column`  
+Extracts the day of the month as an integer from a given date/timestamp/string.  
 
-20. `def least(exprs: Column*): Column`  
-Returns the least value of the list of values, skipping null values. This function takes at least 2 parameters. 
-It will return null iff all parameters are null.  
+18. `def dayofweek(e: Column): Column`  
+Extracts the day of the week as an integer from a given date/timestamp/string. Ranges from 1 for a Sunday through to 7 for a Saturday.  
+
+19. `def month(e: Column): Column`  
+Extracts the month as an integer from a given date/timestamp/string.  
+
+20. `def year(e: Column): Column`  
+Extracts the year as an integer from a given date/timestamp/string.  
