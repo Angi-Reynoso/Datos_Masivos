@@ -7,21 +7,21 @@ Fibonacci numbers) of as follows: <br>
 
 Therefore in the following practice the development of the 6 fibonacci algorithms will be carried out.
 
-This package contains methods for performing basic numeric operations such as elementary exponential, logarithmic, root and trigonometric functions.  
-To make use of any of the methods in this package it is necessary to put "math." first, and then the name designated for the method; for example for square root "sqrt" is used.
 `package math`  
+This package contains methods for performing basic numeric operations such as elementary exponential, logarithmic, root and trigonometric functions.  
+To make use of any of the methods in this package it is necessary to put "math." first, and then the name designated for the method; for example for square root "sqrt" is used.  
 
-Scale library that allows you to stop a cycle while.
-`import util.control.Breaks._` 
+`import util.control.Breaks._`  
+Scale library that allows you to stop a cycle while.  
 
-**1st Algorithm: Recursive version descending**
+**1st Algorithm: Recursive version descending**  
+Methods are always defined with the reserved word "def": `def method (variable: data type): data type = `  
+
+*If the number entered in the function is less than 2, the number entered will be returned to n.*  
+*In any case that is greater than 2, the function will perform a series of operations, and return the result depending 
+on the number entered.*  
 ~~~~
 def algorithm1(n: Int): Int =
---description--  
-If the number entered in the function is less than 2, the number entered will be returned to n
-In any case that is greater than 2, the function will perform a series of operations, 
-and return the result depending on the number entered
-
 {   
     if (n<2)
     {
@@ -35,10 +35,11 @@ and return the result depending on the number entered
 println(algorithm1(1))
 ~~~~
 
-**2nd Algorithm: Version with explicit formula**
+**2nd Algorithm: Version with explicit formula**  
+`math.sqrt`: Returns the square root of a Double value.  
+`math.pow`: Returns the value of the first argument raised to the power of the second argument.  
 ~~~~
 def algorithm2(n: Double): Double =  
---description--  
 {   
     if (n<2)
     {
@@ -47,16 +48,16 @@ def algorithm2(n: Double): Double =
     else
     {
         var phi = ((1 + math.sqrt(5)) / 2)
-        --math.sqrt: Returns the square root of a Double value.--  
         var j = ((math.pow(phi,n) - math.pow((1 - phi),n)) / (math.sqrt(5)))
-        --math.pow: Returns the value of the first argument raised to the power of the second argument.--  
         return j
     }
 }
 println(algorithm2(2))
 ~~~~
 
-**3rd Algorithm: Iterative version**
+**3rd Algorithm: Iterative version**  
+A "for" loop is a repetition control structure which allows us to write a loop that is executed a specific number of times.  
+The loop enables us to perform n number of steps together in one line.  
 ~~~~
 def algorithm3 (n: Int): Int =
 {
@@ -71,13 +72,11 @@ var c = 0
         b = c
     }
     return(a)
-    --description-- 
 }
 println(algorithm3(3))  
 ~~~~
 
-
-**4th Algorithm: Iterative version-2 variables** 
+**4th Algorithm: Iterative version-2 variables**  
 ~~~~
 def algorithm4(n: Int): Int =
 {
@@ -93,8 +92,8 @@ def algorithm4(n: Int): Int =
 println(algorithm4(3))
 ~~~~
 
-
-**5th Algorithm: Iterative vector version** 
+**5th Algorithm: Iterative vector version**  
+"Range" allows us to give you the range we want our arrangement to have.  
 ~~~~
 def algorithm5(n: Int): Int = 
 {   
@@ -104,11 +103,9 @@ def algorithm5(n: Int): Int =
     }
     else
     {
-        val arr = Array.range(0, n+2)
-        --description--  
+        val arr = Array.range(0, n+2) 
         arr(0) = 0
         arr(1) = 1
-        --description--  
         for(k <- 2 to n+1)
         {
             arr(k) = arr(k-1) + arr(k-2)
@@ -119,8 +116,9 @@ def algorithm5(n: Int): Int =
 println(algorithm5(5))
 ~~~~
 
-
 **6th Algorithm: Version Divide and Conquer**  
+A "while" loop repeats a statement or group of statements while a given condition is true. It tests the condition before executing the loop body.  
+A while loop statement repeatedly executes a target statement as long as a given condition is true.  
 ~~~~
 def algorithm6(n: Int): Int = 
 {   
@@ -146,8 +144,7 @@ def algorithm6(n: Int): Int =
         d = t
         i = i/2
     }
-    return a + b  
-    --description--  
+    return a + b    
 }
 println(algorithm6(6))
 ~~~~
