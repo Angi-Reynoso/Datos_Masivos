@@ -1,6 +1,34 @@
 # Functions in scala  
 
-1. 
+1.  `def avg(columnName: String): Column`
+Returns the average of the values in a group. 
+
+2.  `def collect_list(columnName: String): Column`
+Returns a list of objects with duplicates. 
+
+3.  `def collect_set(columnName: String): Column `
+Returns a set of objects with duplicate elements eliminated. 
+
+4. `def first(columnName: String): Column ` 
+The function by default returns the first values it sees. It will return the first non-null value it sees when ignoreNulls is set to true. If all values are null, then null is returned.   
+
+5.  `def last(columnName: String): Column `
+The function by default returns the last values it sees. It will return the last non-null value it sees when ignoreNulls is set to true. If all values are null, then null is returned.   
+
+6.  `def max(columnName: String): Column`
+Returns the maximum value of the column in a group.   
+
+7.  `def min(columnName: String): Column`
+Returns the minimum value of the column in a group.   
+
+8.  `def skewness(columnName: String): Column`
+Returns the skewness of the values in a group.   
+
+9.  `def sum(columnName: String): Column`
+Returns the sum of all values in the given column.   
+
+10. `def kurtosis(columnName: String): Column`
+Returns the kurtosis of the values in a group.  
 
 11. `def grouping(columnName: String): Column`  
 Indicates whether a specified column in a GROUP BY list is aggregated or not, returns 1 for aggregated or 0 for not 
