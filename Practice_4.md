@@ -31,7 +31,7 @@ Returns the sum of all values in the given column.
 Returns the kurtosis of the values in a group.  
 
 11. `def countDistinct(columnName: String, columnNames: String*): Column`  
-Aggregate function: returns the number of distinct items in a group.  
+Returns the number of distinct items in a group.  
 
 12. `def mean(columnName: String): Column`  
 Returns the average of the values in a group.  
