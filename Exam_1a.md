@@ -1,5 +1,6 @@
 # Exam: Unit 1 - Part 1  
 <br>
+
 ~~~~
 //Declaration of function 'diagonalDifference'  
 def diagonalDifference (arr1: Array [Array [Int]]): Int = {
