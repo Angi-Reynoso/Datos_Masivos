@@ -22,3 +22,26 @@ df.select(last("Sales")).show()
 
 //8. def skewness(columnName: String): Column 
 df.select(skewness("Sales")).show()
+
+//9. def corr(columnName1: String, columnName2: String): Column  
+df.select(corr("Sales","Company")).show()
+    
+//10. def count(columnName: String): TypedColumn[Any, Long]  
+
+
+//11. def covar_samp(columnName1: String, columnName2: String): Column  
+df.select(covar_samp("Sales","Company")).show()
+
+//12. def stddev_pop(columnName: String): Column    
+df.select (stddev_pop("Sales")).show()
+
+//13. def stddev_samp(columnName: String): Column    
+df.select (stddev_samp("Sales")).show()
+
+//14. def var_pop(columnName: String): Column    
+df.select (var_pop("Sales")).show()  
+
+//15. def var_samp(columnName: String): Column   
+df.select (var_samp("Sales")).show()
+
+//16. def grouping(columnName: String): Column
