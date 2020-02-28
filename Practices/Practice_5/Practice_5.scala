@@ -27,7 +27,7 @@ df.select(skewness("Sales")).show()
 df.select(corr("Sales","Company")).show()
     
 //10. def count(columnName: String): TypedColumn[Any, Long]  
-
+df.select(count("Sales")).show()
 
 //11. def covar_samp(columnName1: String, columnName2: String): Column  
 df.select(covar_samp("Sales","Company")).show()
