@@ -44,4 +44,3 @@ df.select (var_pop("Sales")).show()
 //15. def var_samp(columnName: String): Column   
 df.select (var_samp("Sales")).show()
 
-//16. def grouping(columnName: String): Column
