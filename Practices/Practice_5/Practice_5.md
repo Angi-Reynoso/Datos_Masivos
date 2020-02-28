@@ -45,35 +45,35 @@ Returns the Pearson Correlation Coefficient for two columns.
 > **Pearson's correlation coefficient** is the test statistics that measures the statistical 
 relationship, or association, between two continuous variables. It is known as the best 
 method of measuring the association between variables of interest because it is based on 
-the method of covariance.
+the method of covariance.  
 A Pearson correlation is a number between -1 and 1 that indicates the extent to which two 
-variables are linearly related.*/
+variables are linearly related.  
 
 10. `def count(columnName: String): TypedColumn[Any, Long]`  
-Returns the number of items in a group. 
+Returns the number of items in a group.  
 
 11. `def covar_samp(columnName1: String, columnName2: String): Column`  
-Returns the sample covariance for two columns. 
+Returns the sample covariance for two columns.  
 
 12. `def stddev_pop(columnName: String): Column`  
-Returns the population standard deviation of the expression in a group.
+Returns the population standard deviation of the expression in a group.  
 > **The standard deviation** is the most common measure of dispersion, which indicates 
 how scattered the data is with respect to the average. The greater the standard 
-deviation, the greater the dispersion of the data.*/
+deviation, the greater the dispersion of the data.  
 
 13. `def stddev_samp(columnName: String): Column`  
-Returns the sample standard deviation of the expression in a group. 
-stddev is an alias for stddev_samp.
+Returns the sample standard deviation of the expression in a group.  
+stddev is an alias for stddev_samp.  
 
 14. `def var_pop(columnName: String): Column`  
-Returns the population variance of the values in a group.
+Returns the population variance of the values in a group.  
 
 15. `def var_samp(columnName: String): Column`  
-Returns the unbiased variance of the values in a group. 
-ariance is an alias for var_samp.
+Returns the unbiased variance of the values in a group.  
+variance is an alias for var_samp.  
 
 > **Variance** is a measure of dispersion that represents the variability of a 
-series of data with respect to its mean.
+series of data with respect to its mean.  
 The variance of a sample or a set of values is the sum of the squared 
 deviations from the average, all this divided by the total number of 
 observations minus 1.  
