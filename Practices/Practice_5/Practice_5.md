@@ -76,9 +76,4 @@ ariance is an alias for var_samp.
 series of data with respect to its mean.
 The variance of a sample or a set of values is the sum of the squared 
 deviations from the average, all this divided by the total number of 
-observations minus 1.
-
-16. `def grouping(columnName: String): Column`  
-Indicates whether a specified column in a GROUP BY list is aggregated or not,
-returns 1 for aggregated or 0 for not aggregated in the result set.
-
+observations minus 1.  
