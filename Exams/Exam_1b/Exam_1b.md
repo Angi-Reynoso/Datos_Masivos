@@ -3,7 +3,7 @@
 ### Instructions:
 Answer the following questions with Spark DataFrames using the "CSV" Netflix_2011_2016.csv.
 > A **DataSet** is a collection of distributed data that already has a structure, unlike RDDs,
-which are unstructured data sets.
+which are unstructured data sets.  
 A **DataFrame** is a DataSet that is organized in columns at the same time, that is, we will have the data
 structured and each column with its corresponding name, which will be much easier for us
 query, modify or transform that data set.  
@@ -97,23 +97,24 @@ and only the first row will be displayed._
 > 
 
 11. With Syntaxis Scala / Spark $ answer the following:  
-  a. How many days was the "Close" column less than $ 600? 
+
+a. How many days was the "Close" column less than $ 600? 
 ~~~~
 ~~~~
 > 
-  b. What percentage of the time was the "High" column greater than $ 500?  
+b. What percentage of the time was the "High" column greater than $ 500?  
 ~~~~
 ~~~~
 > 
-  c. What is Pearson's correlation between the "High" column and the "Volume" column?  
+c. What is Pearson's correlation between the "High" column and the "Volume" column?  
 ~~~~
 ~~~~
 > 
-  d. What is the maximum of the "High" column per year?  
+d. What is the maximum of the "High" column per year?  
 ~~~~
 ~~~~
 > 
-  e. What is the average of the "Close" column for each calendar month?  
+e. What is the average of the "Close" column for each calendar month?  
 ~~~~
 ~~~~
 > 
