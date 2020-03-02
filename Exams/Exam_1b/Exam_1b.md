@@ -92,8 +92,8 @@ in the following exercises.
 
 9. What is the meaning of the "Close" column?  
 ~~~~
-//The Close column refers to closing prices, that is, the last level at which an asset was 
-//traded before the market closed on a given day.
+The Close column refers to closing prices, that is, the last level at which an asset was 
+traded before the market closed on a given day.
 ~~~~
 
 10. What is the maximum and minimum of the "Volume" column?  
