@@ -9,3 +9,4 @@
 
 ## Unit 1 - Exams:  
 * [Exam partial 1](/Exams/Exam_1a/Exam_1a.md)  
+* [Exam partial 2](/Exams/Exam_1b/Exam_1b.md)  
