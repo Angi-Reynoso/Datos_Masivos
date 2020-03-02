@@ -92,36 +92,76 @@ in the following exercises.
 
 9. What is the meaning of the "Close" column?  
 ~~~~
+//The Close column refers to closing prices, that is, the last level at which an asset was 
+//traded before the market closed on a given day.
 ~~~~
 
 10. What is the maximum and minimum of the "Volume" column?  
 ~~~~
+df.select(max("Volume")).show()
+df.select(min("Volume")).show()
 ~~~~
-> 
+> `select()` allows queries in Spark Scala similar to SQL.  
+`max()` is used to obtain the maximum value within a column.  
+`min()` is used to obtain the minimum value within a column.  
 
 11. With Syntaxis Scala / Spark $ answer the following:  
 
 a. How many days was the "Close" column less than $ 600? 
 ~~~~
+val res2 = df.filter($"Close"<600)
+res2.select(count("Close")).show()
 ~~~~
-> 
+> The `filter()` method is used to select all the elements of the DataFrame that satisfy a given condition.  
+`count()` returns the total number of elements within a group (column).  
+_In this case, the data in the "Close" column whose values are less than 600 are filtered and stored in the 
+"res2" variable, then the variable is selected and the total number of filtered elements is counted, to later 
+show the result._  
 
 b. What percentage of the time was the "High" column greater than $ 500?  
 ~~~~
+(df.filter($"High">500).count()*1.0 / df.count()) * 100
 ~~~~
-> 
+> _The data in the "High" column whose values are greater than 500 are filtered and counted using the `count()` 
+method. The result is multiplied by 1.0 to convert it to a Double type, divided by the total elements in the 
+DataFrame (`df.count()`), and then multiplied by 100 to obtain the percentage._  
 
 c. What is Pearson's correlation between the "High" column and the "Volume" column?  
 ~~~~
+df.select(corr("High", "Volume")).show() 
 ~~~~
->  
+> `corr()` returns the Pearson Correlation Coefficient for two columns.  
+A **Pearson correlation** is a number between -1 and 1 that indicates the extent to which two variables are 
+linearly related.  
 
 d. What is the maximum of the "High" column per year?  
 ~~~~
+val df2 = df.withColumn("Year", year(df("Date")))
+val dfmax = df2.groupBy("Year").max()
+val res3 = dfmax.select($"Year", $"max(High)")
+res3.orderBy($"Year".asc).show()
 ~~~~
->  
+> `groupBy()` allows you to group the data according to a given column.  
+`year()` extracts the year as an integer from a given date/timestamp/string.  
+_A new "Year" column is named, which will get its values from the `year()` function applied to the data 
+in the "Date" column.  
+The data is grouped according to the "Year" column and the maximum is calculated.  
+The "Year" column and the new "max(High)" column are selected, where the maximum values calculated for 
+the "High" column data will be displayed.  
+Finally, the data obtained are sorted according to the "Year" column in ascending order, and displayed._  
 
 e. What is the average of the "Close" column for each calendar month?  
 ~~~~
+val df3 = df.withColumn("Month", month(df("Date")))
+val dfavg = df3.groupBy("Month").mean()
+val res4 = dfavg.select($"Month", $"avg(Close)")
+res4.orderBy($"Month".asc).show()
 ~~~~
-> 
+> `month()` extracts the month as an integer from a given date/timestamp/string.  
+`mean()` returns the average of the values in a group. `avg()` is also used.  
+_A new "Month" column is named, which will get its values from the `month()` function applied to the data 
+in the "Date" column.  
+The data is grouped according to the "Month" column and the average is calculated.  
+The "Month" column and the new "avg(Close)" column are selected, where the average values calculated for 
+the data in the "Close" column will be displayed.  
+Finally, the data obtained are sorted according to the "Month" column in ascending order, and displayed._
