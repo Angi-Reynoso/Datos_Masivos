@@ -33,13 +33,13 @@ And finally in `csv("")` we put the name of the file and its extension, in this 
 ~~~~
 df.columns
 ~~~~
-> `.columns` is used to display only the names of the DataFrame columns.  
+> `columns` is used to display only the names of the DataFrame columns.  
 
 4. How is the scheme?  
 ~~~~
 df.printSchema()
 ~~~~
-> `.printSchema()` is used to display only existing columns and information about them.  
+> `printSchema()` is used to display only existing columns and information about them.  
 
 5. Print the first 5 rows.  
 ~~~~
@@ -52,19 +52,19 @@ for(row <- df.head(5)){
 // Another option: limit number of rows to print
 df.limit(5).show() 
 ~~~~
-> `.head()` is used to display the first N elements of the DataFrame.  
+> `head()` is used to display the first N elements of the DataFrame.  
 _To print the rows separately you can use a for, where the counter (row) is equal to only the 
-first N elements (.head), and prints them one by one._  
-There is also `.limit()`, which allows us to delimit up to how many rows we want to print, 
+first N elements (head), and prints them one by one._  
+There is also `limit()`, which allows us to delimit up to how many rows we want to print, 
 following the order of the data in the DataFrame.  
-`.show()` is used to display the results or print the DataFrame. Also within the parentheses 
+`show()` is used to display the results or print the DataFrame. Also within the parentheses 
 you can specify the number of elements to display.  
 
 6. Use describe () to learn about the DataFrame.  
 ~~~~
 df.describe().show()
 ~~~~
-> `.describe()` is used to print a statistical summary of the DataFrame.
+> `describe()` is used to print a statistical summary of the DataFrame.
 
 7. Create a new dataframe with a new column called "HV Ratio" which is the ratio between the price of the 
 "High" column versus the "Volume" column of shares traded for one day.  
@@ -72,24 +72,27 @@ df.describe().show()
 val df2 = df.withColumn("HV Ratio", df("High")/df("Volume"))
 df2.show()
 ~~~~
-> `.withColumn()` is used to add a column in a DataFrame. Within the parentheses, the name of the column 
-and the values it will take will be specified, either directly or as a result of an operation.  
+> The `withColumn()` function is used to rename, change the value, convert the datatype of an existing 
+DataFrame column and also can be used to create a new column.  
+Within the parentheses, the name of the column and the values it will take will be specified, either 
+directly or as a result of an operation.  
 
 8. What day had the highest peak in the "Close" column?  
 ~~~~
 df.orderBy($"Close".desc).show(1)
 df.select(max("Close")).show()
 ~~~~
-> `.orderBy()` is used to sort the data according to the specified column and order.  
+> `orderBy()` is used to sort the data according to the specified column and order.  
 In Scala it is necessary to place a '$' sign before the column name between " ".  
-It can be sorted ascending (`.asc`) or descending (`.desc`).  
+It can be sorted ascending (`asc`) or descending (`desc`).  
 _In this case, the data is being sorted according to the "Close" column, in descending order, 
 and only the first row will be displayed._  
+Note: The second line is only to verify the result obtained, it will be explained in greater detail
+in the following exercises.  
 
 9. What is the meaning of the "Close" column?  
 ~~~~
 ~~~~
-> 
 
 10. What is the maximum and minimum of the "Volume" column?  
 ~~~~
@@ -102,18 +105,22 @@ a. How many days was the "Close" column less than $ 600?
 ~~~~
 ~~~~
 > 
+
 b. What percentage of the time was the "High" column greater than $ 500?  
 ~~~~
 ~~~~
 > 
+
 c. What is Pearson's correlation between the "High" column and the "Volume" column?  
 ~~~~
 ~~~~
-> 
+>  
+
 d. What is the maximum of the "High" column per year?  
 ~~~~
 ~~~~
-> 
+>  
+
 e. What is the average of the "Close" column for each calendar month?  
 ~~~~
 ~~~~
