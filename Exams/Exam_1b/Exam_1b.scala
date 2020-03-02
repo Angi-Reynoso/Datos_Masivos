@@ -34,11 +34,8 @@ df.orderBy($"Close".desc).show(1)
 df.select(max("Close")).show()
 
 //9. Meaning of the Close column
-df.describe("Close").show()
 //The Close column refers to closing prices, that is, the last level at which an asset was 
 //traded before the market closed on a given day.
-//La columna Close se refiere a los precios de cierre, es decir, el último nivel en el que 
-//se negoció un activo antes de que el mercado cerrara en un día determinado.
 
 //10. Maximum and minimum of the Volume column
 df.select(max("Volume")).show()
@@ -51,9 +48,6 @@ res2.select(count("Close")).show()
 
 //11b. What percentage of the time was the High column greater than 500?
 (df.filter($"High">500).count()*1.0 / df.count()) * 100
-
-//df.filter($"High">500).count() = registros mayores a 500
-//df.count() = total de registros
 
 //11c. What is Pearson's correlation between the High column and the Volume column?
 df.select(corr("High", "Volume")).show() 
