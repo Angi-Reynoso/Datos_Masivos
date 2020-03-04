@@ -25,7 +25,7 @@ When the value of one variable is high, the value of the other is also high, the
 * **Correlation equal to zero:** when the correlation is equal to zero it means that it is not possible to determine some sense of covariation. However, it does not mean that there is no non-linear relationship between the variables.
 When the variables are independent, it means that they are correlated, but this means that the result is true.
 
-> APA
+> QuestionPro (2020, February 3). What is the Pearson correlation coefficient? Retrieved February 20, 2020, from https://www.questionpro.com/blog/es/coeficiente-de-correlacion-de-pearson/
 
 <br>
 
