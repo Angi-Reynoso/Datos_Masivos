@@ -1,2 +1,11 @@
-# Datos_Masivos
-Pardini Coronado 15210339, Reynoso Silva 15211080
+# Index 
+
+## Unit 2 - Practices:  
+* [Practice 1]()  
+
+## Unit 2 - Homeworks:  
+* [Homework 1]()   
+
+## Unit 2 - Exams:  
+* [Exam]()  
+
