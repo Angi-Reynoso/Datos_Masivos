@@ -24,8 +24,7 @@ In supervised learning, algorithms work with “labeled data”, trying to find 
     
       **a) Decision trees.**  
       A decision tree is a decision support tool that uses a graph or model similar to a decision tree and its possible consequences, including the results of fortuitous events, resource costs, and profit. They have an appearance like this:  
-      <img src="https://student.mohammed.mx/tutoriales/analisis/541.gif" 
-alt="image" width="35%">
+      <img src="https://image.slidesharecdn.com/l7decision-treetable-130318112451-phpapp01/95/l7-decision-tree-table-21-638.jpg?cb=1363605932" alt="image" width="35%">  
         
       From a business decision-making point of view, a decision tree is the minimum number of yes / no questions that one has to ask, to assess the probability of making a correct decision, most of the time. This method allows you to approach the problem in a structured and systematic way to reach a logical conclusion.  
     
@@ -46,7 +45,7 @@ alt="image" width="35%">
 
       **d) Logistic regression.**  
       Logistic regression is a powerful statistical way to model a binomial result with one or more explanatory variables. Measure the relationship between the categorical dependent variable and one or more independent variables by estimating the probabilities using a logistic function, which is the cumulative logistic distribution.  
-      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRbYRG_Q6Sn7-TeaXysKVJe2pAObFph2ZD5SGX3BAYxQ0bkiCnf&usqp=CAU" alt="image" width="35%">  
+      <img src="https://www.researchgate.net/profile/Jack_Baker3/publication/228974449/figure/fig5/AS:668748008681483@1536453358991/An-example-of-prediction-of-the-probability-of-collapse-using-logistic-regression-applied.png" alt="image" width="35%">  
 
       **e) Support Vector Machines (SVM).**  
       SVM is a binary classification algorithm. Given a set of points of 2 types at the N-dimensional location, SVM generates a dimensional (N-1) hyperplane to separate those points into 2 groups. Let's say you have some points of 2 types on a piece of paper that are linearly separable. SVM will find a straight line separating those points into 2 types and located as far as possible from all those points.  
