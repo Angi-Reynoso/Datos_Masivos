@@ -22,12 +22,16 @@ data.head(1)
 //Transform the data frame so that it takes the form of
 // ("label", "features")
 
-// Import VectorAssembler and Vectors
 
+// Import VectorAssembler and Vectors
+import org.apache.spark.ml.feature.VectorAssembler
+import org.apache.spark.ml.linalg.Vectors
 
 // Rename the Yearly Amount Spent column as "label"
 // Also from the data take only the numerical column
 // Leave all this as a new DataFrame called df
+val df = data.select(data("Yearly Amount Spent").as("label"),$"Avg Session Length",$"Time on App",$"Time on Website",$"Length of Membership")
+
 
 // Have the assembler object convert the input values to a vector
 
@@ -36,9 +40,10 @@ data.head(1)
 // to a single output column of an array named "features"
 // Set the input columns from where we are supposed to read the values.
 // Call this a new assambler.
+val assembler = new VectorAssembler().setInputCols(Array("Avg Session Length","Time on App","Time on Website","Length of Membership")).setOutputCol("features")
 
 // Use the assembler to transform our DataFrame to two columns: label and features
-
+val output = assembler.transform(df).select($"label",$"features")
 
 // Create an object for line regression model.
 val p1 = new LinearRegression()
@@ -46,14 +51,19 @@ val p1 = new LinearRegression()
 // Fit the model for the data and call this model lrModel
 val p1Model = p1.fit(output) //ajustar el output
 
+
 // Print the coefficients and intercept for the linear regression
 
-val trainingSummary = p1Model.summary
 
 // Summarize the model on the training set print the output of some metrics!
 // Use our model's .summary method to create an object
 // called trainingSummary
+val trainingSummary = p1Model.summary
 
 // Show the residuals values, the RMSE, the MSE, and also the R ^ 2.
 
+trainingSummary.residuals.show()
+trainingSummary.predictions.show()
+trainingSummary.r2 
+trainingSummary.rootMeanSquaredError 
 
