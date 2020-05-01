@@ -1,6 +1,7 @@
 # Index #  
 * [Homework 1: Main Types of Machine Learning Algorithms](#homework-1)  
 * [Homework 2: VectorAssembler, Vectors, and RootMeanSquaredError](#homework-2)  
+* [Homework 3: Pipeline and Confusion Matrix](#homework-3)  
 
 <br>
 
@@ -134,21 +135,13 @@ This type of learning is based on improving the model's response using a feedbac
 <br>
     
 > * Recuero de los Santos, P. (2017). Tipos de aprendizaje en Machine Learning: supervisado y no supervisado. Think Big. Retrieved March 25, 2020, from https://empresas.blogthinkbig.com/que-algoritmo-elegir-en-ml-aprendizaje/  
-
 > * Los 10 Algoritmos esenciales en Machine Learning. (2017). Raona. Retrieved March 25, 2020, from https://www.raona.com/los-10-algoritmos-esenciales-machine-learning/  
-
 > * Algoritmos de Machine Learning y cómo seleccionar el mejor(1/3). (2018). LIS Solutions, Consultoría Logística. Retrieved March 25, 2020, from https://www.lis-solutions.es/blog/algoritmos-de-machine-learning-y-como-seleccionar-el-mejor1-3/  
-
 > * Algoritmo PCA: de lo complejo a lo sencillo. (2018). LIS Solutions, Consultoría Logística. Retrieved March 25, 2020, from  https://www.lis-solutions.es/blog/algoritmo-pca-de-lo-complejo-a-lo-sencillo/  
-
 > * ¿Cuáles son los tipos de algoritmos del machine learning?. (2019). APD España. Retrieved March 25, 2020, from https://www.apd.es/algoritmos-del-machine-learning/  
-
 > * Principales Algoritmos usados en Machine Learning. (2017). Aprende Machine Learning. Retrieved March 25, 2020, from  https://www.aprendemachinelearning.com/principales-algoritmos-usados-en-machine-learning/  
-
 > * Machine Learning | Qué es, tipos, ejemplos y cómo implementarlo. (2019). GraphEverywhere. Retrieved March 25, 2020, from https://www.grapheverywhere.com/machine-learning-que-es-tipos-ejemplos-y-como-implementarlo/  
-
 > * Ramírez, C. A. (2018). Algoritmo SVD aplicado a los sistemas de recomendación en el comercio. TIA, 6(1), pp. 21. Retrieved from https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=7&cad=rja&uact=8&ved=2ahUKEwjsrODbq7XoAhWDt54KHdx4BLsQFjAGegQICRAB&url=https%3A%2F%2Frevistas.udistrital.edu.co%2Findex.php%2Ftia%2Farticle%2Fdownload%2F11827%2Fpdf%2F&usg=AOvVaw19h5qNCfQC8GEJqv_axODl  
-
 > * Long short-term memory. (2020). En.wikipedia.org. Retrieved March 25, 2020, from https://en.wikipedia.org/wiki/Long_short-term_memory  
 
 <br>
@@ -196,13 +189,146 @@ Key point: The RMSE is thus the distance, on average, of a data point from the f
 
 <br>
 
-> * Extracting, transforming and selecting features - Spark 2.4.5 Documentation. (2020). Spark.apache.org. Retrieved April 28, 2020, from https://spark.apache.org/docs/latest/ml-features.html#vectorassembler
+> * Extracting, transforming and selecting features - Spark 2.4.5 Documentation. (2020). Spark.apache.org. Retrieved April 28, 2020, from https://spark.apache.org/docs/latest/ml-features.html#vectorassembler  
+> * Spark 2.4.5 ScalaDoc. (2020). Spark.apache.org. Retrieved April 28, 2020, from https://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.ml.linalg.Vectors$  
+> * Spark 2.4.5 ScalaDoc. (2020). Spark.apache.org. Retrieved April 28, 2020, from https://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.ml.regression.LinearRegressionTrainingSummary  
+> * What are Mean Squared Error and Root Mean Squared Error? - Technical Information Library. (2018). Technical Information Library. Retrieved April 28, 2020, from https://www.vernier.com/til/1014  
 
-> * Spark 2.4.5 ScalaDoc. (2020). Spark.apache.org. Retrieved April 28, 2020, from https://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.ml.linalg.Vectors$
+<br>
 
-> * Spark 2.4.5 ScalaDoc. (2020). Spark.apache.org. Retrieved April 28, 2020, from https://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.ml.regression.LinearRegressionTrainingSummary
+---
 
-> * What are Mean Squared Error and Root Mean Squared Error? - Technical Information Library. (2018). Technical Information Library. Retrieved April 28, 2020, from https://www.vernier.com/til/1014
+<br>
+
+# Homework 3  
+### Pipeline and Confusion Matrix  
+
+#### PIPELINE LIBRARY  
+**Main concepts in Pipelines**  
+MLlib standardizes APIs for machine learning algorithms to make it easier to combine multiple algorithms into a single pipeline, or workflow. This section covers the key concepts introduced by the Pipelines API, where the pipeline concept is mostly inspired by the scikit-learn project.  
+* **DataFrame:** This ML API uses DataFrame from Spark SQL as an ML dataset, which can hold a variety of data types. E.g., a DataFrame could have different columns storing text, feature vectors, true labels, and predictions.  
+* **Transformer:** A Transformer is an algorithm which can transform (`transform()` method) one DataFrame into another, generally adding one or more columns. E.g., an ML model is a Transformer which transforms a DataFrame with features into a DataFrame with predictions.  
+* **Estimator:** An Estimator is an algorithm which can be fit (`fit()` method) on a DataFrame to produce a Transformer. E.g., a learning algorithm is an Estimator which trains on a DataFrame and produces a model.  
+* **Pipeline:** A Pipeline chains multiple Transformers and Estimators together to specify an ML workflow.  
+* **Parameter:** All Transformers and Estimators now share a common API for specifying parameters.  
+
+**Pipeline**  
+In machine learning, it is common to run a sequence of algorithms to process and learn from data. E.g., a simple text document processing workflow might include several stages:  
+* Split each document’s text into words.  
+* Convert each document’s words into a numerical feature vector.  
+* Learn a prediction model using the feature vectors and labels.  
+MLlib represents such a workflow as a Pipeline, which consists of a sequence of PipelineStages (Transformers and Estimators) to be run in a specific order.  
+
+**How it works**  
+A Pipeline is specified as a sequence of stages, and each stage is either a Transformer or an Estimator. These stages are run in order, and the input DataFrame is transformed as it passes through each stage. For Transformer stages, the `transform()` method is called on the DataFrame. For Estimator stages, the `fit()` method is called to produce a Transformer (which becomes part of the PipelineModel, or fitted Pipeline), and that Transformer’s `transform()` method is called on the DataFrame.  
+
+We illustrate this for the simple text document workflow. The figure below is for the training time usage of a Pipeline.  
+<img src="https://spark.apache.org/docs/latest/img/ml-Pipeline.png" alt="image" width="55%">  
+
+Above, the top row represents a Pipeline with three stages. The first two (Tokenizer and HashingTF) are Transformers (blue), and the third (LogisticRegression) is an Estimator (red). The bottom row represents data flowing through the pipeline, where cylinders indicate DataFrames. The `Pipeline.fit()` method is called on the original DataFrame, which has raw text documents and labels. The `Tokenizer.transform()` method splits the raw text documents into words, adding a new column with words to the DataFrame. The `HashingTF.transform()` method converts the words column into feature vectors, adding a new column with those vectors to the DataFrame. Now, since LogisticRegression is an Estimator, the Pipeline first calls `LogisticRegression.fit()` to produce a LogisticRegressionModel. If the Pipeline had more Estimators, it would call the LogisticRegressionModel’s `transform()` method on the DataFrame before passing the DataFrame to the next stage.  
+
+A Pipeline is an Estimator. Thus, after a Pipeline’s `fit()` method runs, it produces a PipelineModel, which is a Transformer. This PipelineModel is used at test time; the figure below illustrates this usage.  
+<img src="https://spark.apache.org/docs/latest/img/ml-PipelineModel.png" alt="image" width="55%">  
+
+In the figure above, the PipelineModel has the same number of stages as the original Pipeline, but all Estimators in the original Pipeline have become Transformers. When the PipelineModel’s `transform()` method is called on a test dataset, the data are passed through the fitted pipeline in order. Each stage’s `transform()` method updates the dataset and passes it to the next stage.  
+
+Pipelines and PipelineModels help to ensure that training and test data go through identical feature processing steps.  
+
+<br>
+
+#### CONFUSION MATRIX  
+In the field of artificial intelligence, a confusion matrix is a tool that allows the visualization of the performance of an algorithm that is used in supervised learning. Each column in the array represents the number of predictions for each class, while each row represents the instances in the actual class. One of the benefits of confusion matrices is that they make it easy to see if the system is confusing the different classes or results of the classification.  
+
+If the number of samples from different classes changes greatly in the input data, the classifier error rate will not be representative. If for example there are 990 samples with result 1, but only 10 with result 2, the classifier will have a bias to classify towards class 1. If the classifier classifies all the samples as class 1, its precision will be 99%. This does not mean that it is a good classifier, as it had a 100% error in classifying class 2 samples.  
+
+Let's see it represented in the following table:  
+<img src="https://miro.medium.com/max/712/1*Z54JgbS4DUwWSknhDCvNTQ.png" alt="image" width="35%">  
+
+* **TP** is the number of positives that were correctly classified as positive by the model.  
+* **TN** is the number of negatives that were correctly classified as negative by the model.  
+* **FN** is the number of positives that were incorrectly classified as negative. Type 2 error (False Negatives)  
+* **FP** is the number of negatives that were incorrectly classified as positive. Type 1 error (False positives)  
+
+<br>
+
+**Brief explanation of the Metrics**  
+1. **Accuracy and Precision**  
+  1.1 **Accuracy**  
+    It refers to how close the result of a true value measurement is. In statistical terms, accuracy is related to the bias of an estimate. Also known as True Positive (or True positive rate). It is represented by the proportion between the real positives predicted by the algorithm and all the positive cases.  
+    Practically, Accuracy is the number of positive predictions that were correct.  
+    * It is calculated as: (TP + TN) / (TP + FP + FN + TN)  
+
+    1.2 **Precision**  
+      It refers to the dispersion of the set of values obtained from repeated measurements of a magnitude. The smaller the dispersion, the greater the precision. It is represented by the ratio between the number of correct predictions (both positive and negative) and the total number of predictions.  
+      In practical form it is the percentage of positive cases detected.  
+      * It is calculated as: TP / (TP + FP)  
+
+2. **Sensitivity (Recall) and Specificity**  
+Sensitivity and specificity are two values that indicate the capacity of our estimator to discriminate positive cases from negative ones. Sensitivity is the fraction of true positives, while specificity is the fraction of true negatives.  
+
+    2.1 **Sensitivity (Recall)**  
+      Also known as True Positive Rate or TP. It is the proportion of positive cases that were correctly identified by the algorithm.  
+      * It is calculated: TP / (TP + FN), or what would be the same in terms of health: True positives / Total Sick (it is the ability to correctly detect the disease among the sick).  
+
+    2.2 **Specificity**  
+      Also known as the True Negative Rate or TN. These are the negative cases that the algorithm has correctly classified. It expresses how well the model can detect this class.  
+      * It is calculated: TN / (TN + FP), or what would be the same in terms of health: True Negatives / Total Healthy (it is the ability to identify the cases of healthy patients among all healthy).  
+
+3. **F-Score (F-measure)**  
+It is difficult to compare two models with low precision and high recall or vice versa. So to make them comparable, we use F-Score. F-score helps to measure Recall and Precision at the same time. It uses Harmonic Mean in place of Arithmetic Mean by punishing the extreme values more.  
+    * It is calculated: (2 * (Recall * Precision)) / (Recall + Precision)
+
+&nbsp;
+
+#### Check results of confusion matrix (Example: logregression.scala)  
+<img src="Images/Confusion Matrix.png" alt="image" width="25%">  
+
+**Confusion Matrix:**  
+~~~~  
+   TP   |  FP  |       | 
+--------|------|-------|
+  114   |  16  | = 130 |
+--------|------|-------|
+   27   |  61  | = 88  |
+--------|------|-------|
+   FN   |  TN  |       |
+--------|------|-------|
+ = 141  | = 77 |       |
+~~~~  
+
+**1. Accuracy:**  
+~~~  
+(TP + TN) / (TP + FP + FN + TN) = (114 + 61) / (114 + 16 + 27 + 61) = 175/218 = 0.8027
+~~~  
+The obtained value coincides with the one thrown in the terminal when using the metrics.accuracy function, which indicates that the matrix has an approximate 80% accuracy; not bad, but could be better.  
+
+**2. Precision = % of Correct Predictions:**  
+~~~  
+TP / (TP + FP) = 114 / (114 + 16) = 114/130 = 0.8769
+TN / (TN + FN) = 61 / (61 + 27) = 61/88 = 0.6931
+~~~  
+The precision result confirms how effective the predictions made in the model are; In this case, for the classification of true, there is an approximate of 87%, while for the false it is an approximate of 69%. This indicates that the results for the "false" case may not be very reliable or accurate.  
+
+**3. Sensitivity (Recall) = True Positive Rate:**  
+~~~  
+TP / (TP + FN) = 114 / (114 + 27) = 114/141 = 0.8085
+~~~  
+According to the obtained result, the percentage of the true positive rate is approximately 80%; This means that most of the positive cases were classified correctly.  
+
+**4. Specificity = True Negative Rate:**  
+~~~  
+TN / (TN + FP) = 61 / (61 + 16) = 61/77 = 0.7922
+~~~  
+Similar to the previous calculation, with the true negative rate, the percentage of negative cases that were classified correctly is obtained; in this case it is approximately 79%, a little lower than in the case of positives.  
+
+**Conclusion:**  
+It can be said that the model works correctly, however, considering the percentages obtained in the previous calculations (from 69% to 87%), it can also be inferred that some improvements still need to be made; for example in the case of negatives, since this is where the lowest results were obtained.  
+
+<br>
+
+> * ML Pipelines - Spark 2.4.5 Documentation. (2020). Spark.apache.org. Retrieved May 1, 2020, from https://spark.apache.org/docs/latest/ml-pipeline.html  
+> * Barrios Arce, J. (2019). La matriz de confusión y sus métricas – Inteligencia Artificial –. Juan Barrios. Retrieved May 1, 2020, from https://www.juanbarrios.com/matriz-de-confusion-y-sus-metricas/  
+> * Narkhede, S. (2018). Understanding Confusion Matrix. Medium. Retrieved May 1, 2020, from https://towardsdatascience.com/understanding-confusion-matrix-a9ad42dcfd62  
 
 <br>
 
