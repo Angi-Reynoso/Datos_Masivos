@@ -281,7 +281,7 @@ It is difficult to compare two models with low precision and high recall or vice
 &nbsp;
 
 #### Check results of confusion matrix (Example: logregression.scala)  
-<img src="Images/Confusion Matrix.png" alt="image" width="25%">  
+<img src="https://github.com/Angi-Reynoso/Datos_Masivos/blob/Unidad_2/Images/Confusion Matrix.png" alt="image" width="95%">  
 
 **Confusion Matrix:**  
 ~~~~  
