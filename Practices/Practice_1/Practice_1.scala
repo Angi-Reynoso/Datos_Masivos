@@ -15,7 +15,7 @@ val data  = spark.read.option("header","true").option("inferSchema", "true").for
 // Print the schema on the DataFrame.
 data.printSchema
 
-//Print an example row from the DataFrane.
+//Print an example row from the DataFrame.
 data.head(1)
 val colnames = data.columns
 val firstrow = data.head(1)(0)
