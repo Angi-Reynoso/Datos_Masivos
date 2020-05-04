@@ -68,5 +68,5 @@ val trainingSummary = p1Model.summary
 trainingSummary.residuals.show()
 trainingSummary.predictions.show()
 trainingSummary.r2 
-trainingSummary.rootMeanSquaredError 
+trainingSummary.rootMeanSquaredError
 
