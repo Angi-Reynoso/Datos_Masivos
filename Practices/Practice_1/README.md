@@ -1,7 +1,7 @@
 
-## Instructions  
-
 ## LINEAR REGRESSION EXERCISE
+
+## Instructions  
 
 1. Import LinearRegression
 
