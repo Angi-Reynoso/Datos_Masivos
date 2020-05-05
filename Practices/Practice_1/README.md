@@ -4,8 +4,20 @@
 ## Instructions: 
 
 1. Import LinearRegression
+* Solution 
+~~~
+import org.apache.spark.ml.regression.LinearRegression
+~~~
 
 2. Optional: Use the following code to configure errors
+
+`log4j._` It is an additional library that allows our application to display information messages about what is happening in it, which is usually known as a log.  
+
+`getLogger()`It is a method of a Logger class used find or create a logger
+~~~
+import org.apache.log4j._
+Logger.getLogger("org").setLevel(Level.ERROR)
+~~~
 
 3. Start a simple Spark Session
 
@@ -45,4 +57,3 @@ Use our model's .summary method to create an object called trainingSummary
 16. Show the residuals values, the RMSE, the MSE, and also the R ^ 2.
 
 
-## Solutions: 
