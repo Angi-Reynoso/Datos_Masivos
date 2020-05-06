@@ -21,7 +21,7 @@ val colnames = data.columns
 val firstrow = data.head(1)(0)
 println("\n")
 println("Example data row")
-for(ind <- Range(1, colnames.length)){
+for(ind <- Range(0, colnames.length)){
     println(colnames(ind))
     println(firstrow(ind))
     println("\n")
@@ -36,17 +36,17 @@ import org.apache.spark.ml.linalg.Vectors
 // Rename the Yearly Amount Spent column as "label"
 // Also from the data take only the numerical column
 // set all this as a new DataFrame called df
-val df = data.select(data("Yearly Amount Spent").as("label"),$"Avg Session Length",$"Time on App",$"Time on Website",$"Length of Membership")
+val df = data.select(data("Yearly Amount Spent").as("label"),$"Avg Session Length", $"Time on App", $"Time on Website", $"Length of Membership", $"Yearly Amount Spent")
 
 
 // Use the VectorAssembler object to convert the input columns of the df
 // to a single output column of an array named "features"
 // Set the input columns from where we are supposed to read the values.
-// Call this a new assambler.
-val assembler = new VectorAssembler().setInputCols(Array("Avg Session Length","Time on App","Time on Website","Length of Membership")).setOutputCol("features")
+// Call this a new assembler.
+val new_assembler = new VectorAssembler().setInputCols(Array("Avg Session Length","Time on App","Time on Website","Length of Membership","Yearly Amount Spent")).setOutputCol("features")
 
 // Use the assembler to transform our DataFrame to two columns: label and features
-val output = assembler.transform(df).select($"label",$"features")
+val output = new_assembler.transform(df).select($"label",$"features")
 
 // Create an object for line regression model.
 val lr = new LinearRegression()
@@ -63,10 +63,10 @@ println(s"Coefficients: ${lrModel.coefficients} Intercept: ${lrModel.intercept}"
 // called trainingSummary
 val trainingSummary = lrModel.summary
 
-// Show the residuals values, the RMSE, the MSE, and also the R ^ 2.
+// Show the residuals values, the RMSE, the MSE, and also the R^2.
 
 trainingSummary.residuals.show()
-trainingSummary.predictions.show()
-trainingSummary.r2 
-trainingSummary.rootMeanSquaredError
+val RMSE = trainingSummary.rootMeanSquaredError
+val MSE = scala.math.pow(RMSE, 2.0)
+val R2 = trainingSummary.r2
 
