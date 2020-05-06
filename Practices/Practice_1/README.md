@@ -70,9 +70,10 @@ import org.apache.spark.ml.linalg.Vectors
 
 > Factory methods for `org.apache.spark.ml.linalg.Vector`. We don't use the name `Vector` because Scala imports `scala.collection.immutable.Vector` by default.
 <br>
+
 8. Rename the Yearly Amount Spent column as "label"  
-8.1 Also from the data take only the numerical column  
-8.2 Leave all this as a new DataFrame called df  
+8.1 Also from the data take only the numerical column    
+8.2 Leave all this as a new DataFrame called df    
 ~~~
 val df = data.select(data("Yearly Amount Spent").as("label"),$"Avg Session Length",$"Time on App",$"Time on Website",$"Length of Membership")
 ~~~
