@@ -91,7 +91,7 @@ val assembler = new VectorAssembler().setInputCols(Array("Avg Session Length","T
 ~~~
 val output = assembler.transform(df).select($"label",$"features")
 ~~~
-
+> `assambler.transform()`
 
 11. Create an object for line regression model.
 ~~~
@@ -103,20 +103,19 @@ val lr = new LinearRegression()
 ~~~
 val p1Model = lr.fit(output) //ajustar el output
 ~~~
-
+> `fit()`
 
 13. Print the coefficients and intercept for the linear regression
 ~~~
 println(s"Coefficients: ${lrModel.coefficients} Intercept: ${lrModel.intercept}")
 ~~~
 
-
-14. Summarize the model on the training set print the output of some metrics!
+14. Summarize the model on the training set print the output of some metrics
 Use our model's .summary method to create an object called trainingSummary
 ~~~
 val trainingSummary = lrModel.summary
 ~~~
-
+>`summary`
 
 15. Show the residuals values, the RMSE, the MSE, and also the R ^ 2.
 ~~~
