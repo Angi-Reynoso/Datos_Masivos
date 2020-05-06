@@ -41,6 +41,7 @@ data.printSchema
 ~~~
 > `printSchema()` is used to display only existing columns and information about them
 
+
 6. Print an example row from the DataFrane.
 ~~~
 data.head(1)
@@ -56,6 +57,7 @@ for(ind <- Range(1, colnames.length)){
 ~~~
 > `head()` is used to display the first N elements of the DataFrame.  
 
+
 ## Set up the DataFrame for Machine Learning
 
 7. Transform the data frame so that it takes the form of ("label", "features")
@@ -68,8 +70,11 @@ import org.apache.spark.ml.linalg.Vectors
 
 > Factory methods for `org.apache.spark.ml.linalg.Vector`. We don't use the name `Vector` because Scala imports `scala.collection.immutable.Vector` by default.  
 
+
 8. Rename the Yearly Amount Spent column as "label"  
+
 8.1 Also from the data take only the numerical column  
+
 8.2 Leave all this as a new DataFrame called df  
 ~~~
 val df = data.select(data("Yearly Amount Spent").as("label"),$"Avg Session Length",$"Time on App",$"Time on Website",$"Length of Membership")
@@ -83,30 +88,37 @@ val df = data.select(data("Yearly Amount Spent").as("label"),$"Avg Session Lengt
 val assembler = new VectorAssembler().setInputCols(Array("Avg Session Length","Time on App","Time on Website","Length of Membership")).setOutputCol("features")
 ~~~
 
+
 10. Use the assembler to transform our DataFrame to two columns: label and features
 ~~~
 val output = assembler.transform(df).select($"label",$"features")
 ~~~
 
+
 11. Create an object for line regression model.
 ~~~
 val lr = new LinearRegression()
 ~~~
+
+
 12. Fit the model for the data and call this model lrModel
 ~~~
 val p1Model = lr.fit(output) //ajustar el output
 ~~~
+
 
 13. Print the coefficients and intercept for the linear regression
 ~~~
 println(s"Coefficients: ${lrModel.coefficients} Intercept: ${lrModel.intercept}")
 ~~~
 
+
 14. Summarize the model on the training set print the output of some metrics!
 Use our model's .summary method to create an object called trainingSummary
 ~~~
 val trainingSummary = lrModel.summary
 ~~~
+
 
 15. Show the residuals values, the RMSE, the MSE, and also the R ^ 2.
 ~~~
