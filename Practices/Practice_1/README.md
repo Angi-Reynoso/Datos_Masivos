@@ -79,7 +79,7 @@ val df = data.select(data("Yearly Amount Spent").as("label"), $"Avg Session Leng
 **9. The VectorAssembler Object**  
 * Use this object to convert the input columns of the df to a single output column of an array named "features" (`.setOutputCol`).  
 * Configure the input columns from where we are supposed to read the values (`.setInputCols`).  
-* Call this a new assambler.  
+* Call this a new assembler.  
 ~~~
 val new_assembler = new VectorAssembler().setInputCols(Array("Avg Session Length", "Time on App", "Time on Website", "Length of Membership", "Yearly Amount Spent")).setOutputCol("features")
 ~~~  
@@ -124,12 +124,12 @@ val RMSE = trainingSummary.rootMeanSquaredError
 val MSE = scala.math.pow(RMSE, 2.0)
 val R2 = trainingSummary.r2
 ~~~
-> `residuals` is the diferrence between the label and predicted value.  
+> `residuals` is the difference between the label and predicted value.  
 
 > `rootMeanSquareError` returns the root mean squared error, which is defined as the square root of the mean squared error.  
 
 > `pow` returns the value of the first argument raised to the power of the second argument.  
 >   * The _Mean Squared Error (MSE)_ tells you how close a regression line is to a set of points. It does this by taking the distances from the points to the regression line (these distances are the “errors”) and squaring them. The squaring is necessary to remove any negative signs. It also gives more weight to larger differences. It’s called the mean squared error as you’re finding the average of a set of errors.  
 
-> `r2` The coefficient of determination; a mesure of fit.  
+> `r2` The coefficient of determination; a measure of fit.  
 
