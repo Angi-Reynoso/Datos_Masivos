@@ -52,7 +52,7 @@ val output = new_assembler.transform(df).select($"label",$"features")
 val lr = new LinearRegression()
 
 // Fit the model for the data and call this model lrModel
-val p1Model = lr.fit(output) //ajustar el output
+val lrModel = lr.fit(output) //ajustar el output
 
 
 // Print the coefficients and intercept for the linear regression
