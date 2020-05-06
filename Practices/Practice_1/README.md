@@ -23,7 +23,6 @@ Logger.getLogger("org").setLevel(Level.ERROR)
 import org.apache.spark.sql.SparkSession
 val spark = SparkSession.builder().getOrCreate()
 ~~~
-<br>
 4. Use Spark for the Clean-Ecommerce csv file.
 ~~~
 val data  = spark.read.option("header","true").option("inferSchema", "true").format("csv").load("Clean-Ecommerce.csv")
@@ -33,13 +32,12 @@ val data  = spark.read.option("header","true").option("inferSchema", "true").for
 `.option ("header", "true")` is used to load file headers.  
 `.option ("inferSchema", "true")` helps Spark automatically infer data types from the file.  
  And finally in `csv("")` we put the name of the file and its extension, in this case _"Clean-Ecommerce.csv"_.  
- <br>
 5. Print the schema on the DataFrame.
 ~~~
 data.printSchema
 ~~~
 > `printSchema()` is used to display only existing columns and information about them
-<br>
+
 6. Print an example row from the DataFrane.
 ~~~
 data.head(1)
