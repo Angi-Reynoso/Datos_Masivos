@@ -107,7 +107,8 @@ val lrModel = lr.fit(output)
 println(s"Coefficients: ${lrModel.coefficients} Intercept: ${lrModel.intercept}")
 ~~~  
 > The regression _coefficients_ represent the mean changes in the response variable for one unit of change in the predictor variable while holding the other predictors in the model constant.  
-> _Intercept:_ Also known as the y-intercept, it is simply the value at which the fitted line crosses the y-axis in linear regression analysis.  
+
+> _Intercept_, also known as the y-intercept, it is simply the value at which the fitted line crosses the y-axis in linear regression analysis.  
 
 **14. Summarize the model on the training set and print the output of some metrics**  
 * Use our model's .summary method to create an object called trainingSummary.  
@@ -124,8 +125,11 @@ val MSE = scala.math.pow(RMSE, 2.0)
 val R2 = trainingSummary.r2
 ~~~
 > `residuals` is the diferrence between the label and predicted value.  
+
 > `rootMeanSquareError` returns the root mean squared error, which is defined as the square root of the mean squared error.  
+
 > `pow` returns the value of the first argument raised to the power of the second argument.  
 >   * The _Mean Squared Error (MSE)_ tells you how close a regression line is to a set of points. It does this by taking the distances from the points to the regression line (these distances are the “errors”) and squaring them. The squaring is necessary to remove any negative signs. It also gives more weight to larger differences. It’s called the mean squared error as you’re finding the average of a set of errors.  
+
 > `r2` The coefficient of determination; a mesure of fit.  
 
