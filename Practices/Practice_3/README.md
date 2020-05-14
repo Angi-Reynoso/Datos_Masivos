@@ -37,7 +37,7 @@ import org.apache.spark.sql.SparkSession
 >  
 
 ### 6. Automatically identify categorical features, and index them.
-* Features (with > 4) distinct values are treated as continuous.
+* Set maxCategories so features with > 4 distinct values are treated as continuous.
 ~~~
     val featureIndexer = new VectorIndexer().setInputCol("features").setOutputCol("indexedFeatures").setMaxCategories(4).fit(data)
 ~~~
