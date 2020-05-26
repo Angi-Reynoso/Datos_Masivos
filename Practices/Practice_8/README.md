@@ -62,5 +62,8 @@ val evaluator = new MulticlassClassificationEvaluator()
 ### 11. Compute the classification error on test data.
 ~~~
 val accuracy = evaluator.evaluate(predictions)
+~~~
+### 12. Print result
+~~~
 println(s"Test Error = ${1 - accuracy}")
 ~~~
