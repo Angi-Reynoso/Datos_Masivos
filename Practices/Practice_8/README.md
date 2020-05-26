@@ -18,19 +18,19 @@ import org.apache.spark.sql.SparkSession
     val spark = SparkSession.builder.appName("MulticlassClassificationEvaluator").getOrCreate()
 ~~~
 
-### 4. load data file.
+### 4. Load data file.
 ~~~
 val inputData = spark.read.format("libsvm")
   .load("data/mllib/sample_multiclass_classification_data.txt")
 ~~~
 
-### 5. generate the train/test split.
+### 5. Generate the train/test split.
 ~~~
 val Array(train, test) = inputData.randomSplit(Array(0.8, 0.2))
 ~~~
 > `inputData.randomSplit`:
 
-### 6. instantiate the base classifier
+### 6. Instantiate the base classifier
 ~~~
 val classifier = new LogisticRegression()
 .setMaxIter(10)
@@ -40,21 +40,21 @@ val classifier = new LogisticRegression()
 > `.setMaxIter(10)`:  
 > `.setTol(1E-6)`:  
 > `.setFitIntercept(true)`:  
-### 7. instantiate the One Vs Rest Classifier.
+### 7. Instantiate the One Vs Rest Classifier.
 ~~~
 val ovr = new OneVsRest().setClassifier(classifier)
 ~~~
-### 8. train the multiclass model.
+### 8. Train the multiclass model.
 ~~~
 val ovrModel = ovr.fit(train)
 ~~~
 
-### 9. score the model on test data.
+### 9. Score the model on test data.
 ~~~
 val predictions = ovrModel.transform(test)
 ~~~
 
-### 10. obtain evaluator.
+### 10. Obtain evaluator.
 ~~~
 val evaluator = new MulticlassClassificationEvaluator()
 .setMetricName("accuracy")
