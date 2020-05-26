@@ -32,11 +32,35 @@ val Array(train, test) = inputData.randomSplit(Array(0.8, 0.2))
 
 ### 6. instantiate the base classifier
 ~~~
-   val classifier = new LogisticRegression()
-  .setMaxIter(10)
-  .setTol(1E-6)
-  .setFitIntercept(true)
+val classifier = new LogisticRegression()
+.setMaxIter(10)
+.setTol(1E-6)
+.setFitIntercept(true)
 ~~~
 > `.setMaxIter(10)`:  
 > `.setTol(1E-6)`:  
 > `.setFitIntercept(true)`:  
+### 7. instantiate the One Vs Rest Classifier.
+~~~
+val ovr = new OneVsRest().setClassifier(classifier)
+~~~
+### 8. train the multiclass model.
+~~~
+val ovrModel = ovr.fit(train)
+~~~
+
+### 9. score the model on test data.
+~~~
+val predictions = ovrModel.transform(test)
+~~~
+
+### 10. obtain evaluator.
+~~~
+val evaluator = new MulticlassClassificationEvaluator()
+.setMetricName("accuracy")
+~~~
+### 11. Compute the classification error on test data.
+~~~
+val accuracy = evaluator.evaluate(predictions)
+println(s"Test Error = ${1 - accuracy}")
+~~~
