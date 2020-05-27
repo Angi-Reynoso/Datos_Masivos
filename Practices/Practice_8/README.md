@@ -34,7 +34,7 @@ val Array(train, test) = inputData.randomSplit(Array(0.8, 0.2))
 
 ### 6. Instantiate the base classifier
 
-> First configure the regression object without having to have a base logistic model at hand so it can be fed into the classifier
+> Configure the regression object without having to have a base logistic model at hand so it can be fed into the classifier
 ~~~
 val classifier = new LogisticRegression()
 .setMaxIter(10)
