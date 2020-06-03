@@ -9,6 +9,7 @@
 * [Practice 6](/Practices/Practice_6/README.md)
 * [Practice 7](/Practices/Practice_7/README.md)  
 * [Practice 8](/Practices/Practice_8/README.md)
+* [Practice 9](/Practices/Practice_9/README.md)
 
 
 ## Unit 2 - Homeworks:  
