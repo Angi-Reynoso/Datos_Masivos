@@ -62,7 +62,7 @@ for(row <- df.head(5)){
 ~~~
 df.describe().show()
 ~~~  
-> `describe().show()` imprime un resumen de los datos del dataframe ().  
+> `describe().show()` imprime un resumen de los datos del dataframe (numero total de datos, promedio, desviacion estandar, valores minimo y maximo).  
 
 **6. Make the corresponding transformation for the categorical data which will be our labels to classify.**  
 * Se seleccionan las columnas del dataframe y se renombra la de "species" como "label".  
