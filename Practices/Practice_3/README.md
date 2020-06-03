@@ -44,6 +44,7 @@ import org.apache.spark.sql.SparkSession
 >  
 
 ### 7. Split the data into training and test sets.
+* Split the data using random split into 70% 
 * 30% held out for testing.  
 ~~~
     val Array(trainingData, testData) = data.randomSplit(Array(0.7, 0.3))
