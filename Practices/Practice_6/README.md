@@ -1,12 +1,12 @@
 # Multilayer Perceptron Classifier
-Los MLP son redes dirigidas hacia adelante con una o más capas de nodos entre los nodos de entrada y los nodos de salida (Ocultas). Cada neurona es tipo perceptrón. Cada capa está completamente conectada a la siguiente capa en la red.  
-* Perceptrón: Neurona artificial o unidad básica de inferencia en forma de discriminador lineal, a partir de lo cual se desarrolla un algoritmo capaz de generar un criterio para seleccionar un sub-grupo a partir de un grupo de componentes más grande.  
 
-Las capas pueden clasificarse en tres tipos:  
-* Capa de entrada: Constituida por aquellas neuronas que introducen los patrones de entrada en la red. En estas neuronas no se produce procesamiento.  
-* Capas ocultas: Formada por aquellas neuronas cuyas entradas provienen de capas anteriores y cuyas salidas pasan a neuronas de capas posteriores.  
-* Capa de salida: Neuronas cuyos valores de salida se corresponden con las salidas de toda la red.  
+MLPs are forward-directed networks with one or more node layers between the input nodes and the output nodes (Hidden). Each neuron is a perceptron type. Each layer is fully connected to the next layer in the network.
+* Perceptron: Artificial neuron or basic unit of inference in the form of a linear discriminator, from which an algorithm is developed capable of generating a criterion to select a sub-group from a larger group of components.
 
+Layers can be classified into three types:
+* Input layer: Made up of those neurons that introduce input patterns into the network. No processing occurs in these neurons.
+* Hidden layers: Formed by those neurons whose inputs come from previous layers and whose outputs go to neurons from later layers.
+* Output layer: Neurons whose output values correspond to the outputs of the entire network.
 
 ## Steps:  
 ### 1. Import libraries and packages.  
@@ -22,7 +22,7 @@ import org.apache.spark.sql.SparkSession
 def main(): Unit = {
     val spark = SparkSession.builder.appName("MultilayerPerceptronClassifierExample").getOrCreate()
 ~~~  
-> Se crea una nueva sesión spark, y se nombra a la aplicación como "MultilayerPerceptronClassifierExample".  
+> A new spark session is created, and the application is named "MultilayerPerceptronClassifierExample  
 
 ### 3. Load the data stored in LIBSVM format as a DataFrame.
 ~~~
@@ -35,7 +35,8 @@ def main(): Unit = {
     val train = splits(0)
     val test = splits(1)
 ~~~  
-> Se divide el dataframe en 60% para entrenamiento y 40% para prueba.  
+
+> The dataframe is divided into 60% for training and 40% for testing.
 
 ### 5. Specify layers for the neural network.  
 * Input layer of size 4 (features).  
