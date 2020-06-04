@@ -43,9 +43,10 @@ def main(): Unit = {
 * Two intermediate of size 5 and 4.  
 * Output of size 3 (classes).  
 ~~~
-    val layers = Array[Int](4, 5, 4, 3)
-~~~  
-> Se crea un arreglo de tipo numerico para guardar los valores de cada capa.  
+val layers = Array[Int](4, 5, 4, 3)
+~~~
+
+> An array of numerical type is created to save the values ​​of each layer.  
 
 ### 6. Create the trainer and set its parameters.  
 ~~~
@@ -55,16 +56,16 @@ def main(): Unit = {
       .setSeed(1234L)
       .setMaxIter(100)
 ~~~  
-> `.setLayers(layers)` se usa para indicar las capas, guardadas en la variable layers.  
-> `.setBlockSize(128)` se usa para indicar el tamaño del bloque en kilobytes (por defecto 128).  
-> `.setSeed(1234L)` se usa para dar aletoriedad a los datos.  
-> `.setMaxIter(100)` se usa para indicar el numero maximo de iteraciones (por defecto 100).  
+> `.setLayers (layers)` is used to indicate the layers, stored in the layers variable.  
+> `.setBlockSize (128)` is used to indicate the size of the block in kilobytes (default 128).  
+> `.setSeed (1234L)` is used to randomize the data.  
+> `.setMaxIter (100)` is used to indicate the maximum number of iterations (default 100).  
 
 ### 7. Train the model.  
 ~~~
     val model = trainer.fit(train)
 ~~~  
-> Se entrena el modelo y se ajusta a los datos de entrenamiento.  
+>The model is trained and adjusted to the training data. 
 
 ### 8. Compute accuracy on the test set.
 ~~~
@@ -72,8 +73,8 @@ def main(): Unit = {
     val predictionAndLabels = result.select("prediction", "label")
     val evaluator = new MulticlassClassificationEvaluator().setMetricName("accuracy")
 ~~~  
-> Se ajusta el modelo a los datos de prueba usando la función `transform`.  
-> Se seleccionan las columnas "prediction" y "label", y se calcula el nivel de exactitud del modelo.  
+> Fit the model to the test data using the `transform` function.
+> The columns "prediction" and "label" are selected, and the level of accuracy of the model is calculated.
 
 ### 9. Print result.  
 ~~~
@@ -83,6 +84,6 @@ def main(): Unit = {
 
 main()
 ~~~
-> Se imprime el nivel de exactitud obtenido para el modelo.  
-> En este caso se obtuvo un aproximado del 90%, por lo cual se puede decir que el modelo funciona bastante bien.  
+> The level of accuracy obtained for the model is printed.
+> In this case, approximately 90% was obtained, so it can be said that the model works quite well.  
 
