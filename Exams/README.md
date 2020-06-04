@@ -1,49 +1,47 @@
 ## Instructions  
-Desarrolle las siguientes instrucciones en Spark con el lenguaje de programación Scala,
-usando solo documentación de la biblioteca Mllib de Machine Learning de Spark y Google.  
+Develop the following instructions in Spark with the Scala programming language, using only documentation from the Mllib library of Spark Machine Learning and Google.  
 
 **1. Data**
-* Del conjunto de datos Iris.csv que se encuentra en https://github.com/jcromerohdz/iris.  
-* Elabora la limpieza de los datos necesarios para ser procesados por el siguiente algoritmo.  
-* (Importante, esta limpieza debe realizarse mediante el script Scala en Spark).
+* From the Iris.csv dataset found at https://github.com/jcromerohdz/iris.
+* Elaborate the cleaning of the necessary data to be processed by the following algorithm.
+* (Important, this cleaning must be done using the Scala script in Spark).
 
-**a. Usando la biblioteca Mllib de Spark, el Algoritmo de Aprendizaje Automático llamado Multilayer Perceptron**  
-* Iniciamos una nueva sesión de spark:  
+**a. Using Spark's Mllib library, the Machine Learning Algorithm called Multilayer Perceptron**  
+*  We start a new session of spark;  
 ~~~
 import org.apache.spark.sql.SparkSession
 val spar = SparkSession.builder().getOrCreate()
 ~~~  
-* Utilizamos el siguiente código para reducir los errores durante la ejecución del resto.  
+* We use the following code to reduce errors while executing the res
 ~~~
 import org.apache.log4j._
 Logger.getLogger("org").setLevel(Level.ERROR)
 ~~~  
-* Cargamos el archivo con el dataset: "iris.csv"  
+* We load the file with the dataset: "iris.csv"  
 ~~~
 val df = spark.read.option("header", "true").option("inferSchema","true")csv("iris.csv")
 df.na.drop().show()
 ~~~  
-> `df.na.drop().show` sirve para eliminar todos los datos que tenga NA o que sean nulos.  
-
-* Importamos las librerías para poder trabajar con Multilayer Perceptron.  
+> `df.na.drop().show` It's used to delete all the data that has NA or that is null.
+* We import the libraries to be able to work with Multilayer Perceptron.
 ~~~
 import org.apache.spark.ml.classification.MultilayerPerceptronClassifier
 import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
 ~~~  
 
-**2. ¿Cuáles son los nombres de columna?**  
+**2. What are the column names? **
 ~~~
 df.columns
 ~~~  
-> `.columns` sirve para desplegar los nombres de las columnas del dataframe.  
+> `.columns` it´s used to display the names of the columns of the dataframe.
 
-**3. ¿Cómo es el esquema?**  
+**3. How is the scheme? ** 
 ~~~
 df.printSchema()
 ~~~  
-> `.printSchema()` sirve para desplegar las columnas del dataframe junto con su tipo de datos.  
+> `.printSchema()` it's used to display the columns of the dataframe together with their data type.  
 
-**4. Imprime las primeras 5 columnas.**  
+**4. Print the first 5 columns. **
 ~~~
 df.show(5)
 
@@ -52,70 +50,70 @@ for(row <- df.head(5)){
     println(row)
 }
 ~~~  
-> `df.show(5)` imprime las primeras 5 filas del dataframe en forma de tabla.    
-> `df.head(5)` imprime las primeras 5 filas del dataframe en forma de arreglos.  
-> El ciclo for se utiliza para desplegar lo mismo que en el codigo anterior, pero con salto de linea en lugar de forma lineal (todo junto).   
+> `df.show (5)` prints the first 5 rows of the dataframe in table form.
+> `df.head (5)` prints the first 5 rows of the dataframe as arrays.
+> The for loop is used to display the same as in the previous code, but with a line break instead of linear (all together).
 
-**5. Use el método describe() para obtener más información sobre los datos en el DataFrame.**  
+**5. Use the describe () method to get more information about the data in the DataFrame. **
 ~~~
 df.describe().show()
 ~~~  
-> `describe().show()` imprime un resumen de los datos del dataframe (numero total de datos, promedio, desviacion estandar, valores minimo y maximo).  
+> `describe (). show ()` prints a summary of the data in the dataframe (total number of data, average, standard deviation, minimum and maximum values).
 
-**6. Realice la transformación correspondiente para los datos categóricos que serán nuestras etiquetas para clasificar.**  
-* Se seleccionan las columnas del dataframe y se renombra la de "species" como "label".  
+** 6. Perform the corresponding transformation for the categorical data that will be our labels to classify. **
+* The columns of the dataframe are selected and the one of "species" is renamed as "label".
 ~~~
 val data = df.select(df("species").as("label"), $"sepal_length", $"sepal_width", $"petal_length", $"petal_width")
 ~~~ 
-* Importamos las librerias VectorAssembler y Vectors. 
+* Import the VectorAssembler and Vectors libraries.
 ~~~
 import org.apache.spark.ml.feature.VectorAssembler
 import org.apache.spark.ml.linalg.Vectors
 ~~~  
-* Se crea un nuevo objeto VectorAssembler llamado assembler para guardar el resto de las columnas como features.  
-* Se crea la variable features para guardar el dataframe con los cambios anteriores.  
+* A new VectorAssembler object called assembler is created to save the rest of the columns as features.
+* The variable features is created to save the dataframe with the previous changes.
 ~~~
 val assembler = new VectorAssembler().setInputCols(Array("sepal_length", "sepal_width","petal_length","petal_width")).setOutputCol("features")
 val features = assembler.transform(data)
 ~~~  
-* Importamos la libreria StringIndexer.  
+* The StringIndexer library was imported
 ~~~
 import org.apache.spark.ml.feature.StringIndexer
 ~~~  
-* Indexamos la columna label y añadimos metadata, esto es para cambiar los valores tipo texto de las etiquetas por valores numericos.  
-* Se ajusta a todo el dataset para incluir todas las etiquetas en el indice.  
+* The label column was indexed and we added metadata, this is to change the text-type values ​​of the labels by numerical values.
+* Fits the entire dataset to include all the tags in the index.
 ~~~
 val labelIndexer = new StringIndexer().setInputCol("label").setOutputCol("indexedLabel").fit(features)
 ~~~  
-* Importamos la librería VectorIndexer.  
+* The VectorIndexer library was imported.  
 ~~~
 import org.apache.spark.ml.feature.VectorIndexer
 ~~~  
-* Se indexa la columna "features" y se establece el numero maximo de categorias a tomar como 4.
-* Se ajusta a todo el dataset para incluir todas las etiquetas en el indice.  
+* The "features" column is indexed and the maximum number of categories to take as 4 is established.
+* Fits the entire dataset to include all the tags in the index.
 ~~~
 val featureIndexer = new VectorIndexer().setInputCol("features").setOutputCol("indexedFeatures").setMaxCategories(4).fit(features)
 ~~~  
-* Se dividen los datos en datos de entrenamiento (0.6) y de prueba (0.4) con `randomSplit`.  
-* Se crean las variables train y test para guardar los datos divididos.  
+* Divide data into training (0.6) and test (0.4) data with `randomSplit`.
+* The train and test variables are created to save the divided data.
 ~~~
 val splits = features.randomSplit(Array(0.6, 0.4), seed = 1234L)
 val train = splits(0)
 val test = splits(1)
 ~~~  
 
-**7. Cree los modelos de clasificación y explique su arquitectura.**  
-* Se especifican capas para la red neuronal: capa de entrada de tamaño 4 (características), dos intermedias de tamaño 5 y 4, y salida de tamaño 3 (clases).  
+** 7. Create the classification models and explain their architecture. **
+* Layers are specified for the neural network: input layer of size 4 (characteristics), two intermediate layers of size 5 and 4, and output of size 3 (classes).
 ~~~
 val layers = Array[Int](4, 5, 4, 3)
 ~~~  
-* Se crea el entrenador y se establecen sus parámetros:  
-  * `setLayers` se hace referencia a la variable creada en el paso anterior `layers`.  
-  * `setLabelCol` se hace referencia a la columna label indexada `indexedLabel`.  
-  * `setFeaturesCol` se hace referencia a la columna features indexada `indexedFeatures`.  
-  * `setBlockSize` se establece el tamaño del bloque por defecto en kilobytes (128).  
-  * `setSeed` se utiliza para dar aleatoriedad a los datos (1234L).  
-  * `setMaxIter` se estable el número máximo de iteraciones a realizar por el modelo (100 es el valor predeterminado).  
+* The traainer is created and its parameters are established:
+  * `setLayers` refers to the variable created in the previous step` layers`.
+  * `setLabelCol` is referenced by the indexed label column` indexedLabel`.
+  * `setFeaturesCol` refers to the indexed features column` indexedFeatures`.
+  * `setBlockSize` sets the default block size in kilobytes (128).
+  * `setSeed` is used to randomize the data (1234L).
+  * `setMaxIter` sets the maximum number of iterations to be performed by the model (100 is the default).  
 ~~~
 val trainer = new MultilayerPerceptronClassifier()
 .setLayers(layers)
@@ -125,41 +123,41 @@ val trainer = new MultilayerPerceptronClassifier()
 .setSeed(1234L)
 .setMaxIter(100)
 ~~~  
-* Importamos la librería IndexToString.  
+* We import the IndexToString library.  
 ~~~
 import org.apache.spark.ml.feature.IndexToString
 ~~~  
-* Se convierten los valores de las etiquetas indexadas en los de las etiquetas originales, y se les asigna el nombre de "predictedLabel".  
+* The values of the indexed tags are converted to those of the original tags, and are named "predictedLabel".
 ~~~
 val labelConverter = new IndexToString()
 .setInputCol("prediction")
 .setOutputCol("predictedLabel")
 .setLabels(labelIndexer.labels)
 ~~~  
-* Importamos la librería para utilizar Pipeline.  
+* The library was imported to use Pipeline.  
 ~~~
 import org.apache.spark.ml.Pipeline
 ~~~  
-* Se unen los indexadores y el MultilayerPerceptronClassifier (el modelo) en una Pipeline.  
+* The indexers and the MultilayerPerceptronClassifier (the model) are joined in a Pipeline. 
 ~~~
 val pipeline = new Pipeline()
 .setStages(Array(labelIndexer, featureIndexer, trainer, labelConverter))
 ~~~  
-* Se entrena el modelo, y se ajusta la Pipeline para trabajar con los datos de entrenamiento.  
+* The model is trained, and the Pipeline is adjusted to work with the training data.
 ~~~
 val model = pipeline.fit(train)
 ~~~  
 
 **8. Print the model results.**  
-* Se calcula el nivel de exactitud utilizando los datos de prueba.  
-  * Se utiliza `transform` para cambiar el dataframe de train a test.  
+* The level of accuracy is calculated using the test data.
+  * Use `transform` to change the dataframe from train to test. 
 ~~~
 val predictions = model.transform(test)
 val predictionAndLabels = predictions.select("prediction", "label")
 ~~~  
-* Se seleccionan las columnas "indexedLabel" y "prediction", y se calcula el porcentaje de error del modelo en base al nivel de exactitud (accuracy).  
-* Se utiliza `evaluate` para valorar las predicciones hechas por el modelo.  
-* Se imprime en consola el porcentaje de error como el resultado de la resta: `1.0 - accuracy`.  
+* The columns "indexedLabel" and "prediction" are selected, and the percentage error of the model is calculated based on the level of accuracy.
+* `Evaluate` is used to evaluate the predictions made by the model.
+* The error percentage is printed in the console as the result of the subtraction: `1.0 - accuracy`.  
 ~~~
 val evaluator = new MulticlassClassificationEvaluator()
 .setLabelCol("indexedLabel")
@@ -168,14 +166,14 @@ val evaluator = new MulticlassClassificationEvaluator()
 val accuracy = evaluator.evaluate(predictions)
 println("Test Error = " + (1.0 - accuracy))
 ~~~  
-* El resultado obtenido fue el siguiente:  
+The following result was the one obtained:  
 ~~~
 ---------------------------------------
 scala> println("Test Error = " + (1.0 - accuracy))
 Test Error = 0.039215686274509776
 ~~~  
-> Se obtuvo un porcentaje de error aproximado al 3%, lo cual significa que el modelo posee un nivel de exactitud del 97% (aproximadamente), lo cual es muy bueno.  
-> Para corroborar los resultados se desplego en consola la variable `predictionAndLabels`, donde se obtiene una tabla con las 60 predicciones calculadas por el modelo (prediction and label), correspondientes al test set.  
-> De los datos desplegados se localizaron unicamente 2 errores, lo cual con respecto al total de 60 predicciones, nos arroja el 3% obtenido en el porcentaje de error.  
+> An error rate of approximately 3% was obtained, which means that the model has an accuracy level of 97% (approximately), which is very good.
+> To corroborate the results, the variable `predictionAndLabels` is displayed in the console, where a table is obtained with the 60 predictions calculated by the model (prediction and label), corresponding to the test set.
+> From the displayed data, only 2 errors were found, which with respect to the total of 60 predictions, gives us the 3% obtained in the error percentage.
 
 
