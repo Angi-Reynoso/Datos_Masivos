@@ -9,7 +9,7 @@ Layers can be classified into three types:
 * Output layer: Neurons whose output values correspond to the outputs of the entire network.
 
 ## Steps:  
-### 1. Import libraries and packages.  
+### 1. Import libraries.  
 ~~~
 import org.apache.spark.ml.classification.MultilayerPerceptronClassifier
 import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
