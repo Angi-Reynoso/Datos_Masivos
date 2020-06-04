@@ -21,7 +21,8 @@ import org.apache.spark.sql.SparkSession
     val spark = SparkSession.builder.appName("RandomForestClassifierExample").getOrCreate()
 ~~~
 
-### 4. Load and parse the data The characteristics are indexed within the features column, and a maximum of 4 categories are established, from which the values will be treated as continuous.file, converting it to a DataFrame.
+### 4. Load and parse the data 
+The characteristics are indexed within the features column, and a maximum of 4 categories are established, from which the values will be treated as continuous.file, converting it to a DataFrame.
 ~~~
     val data = spark.read.format("libsvm").load("sample_libsvm_data.txt")
 ~~~
