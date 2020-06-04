@@ -1,15 +1,13 @@
 ## Instructions  
-
-Develop the following instructions in Spark with the Scala programming language,
-using only documentation from Spark's Machine Learning Mllib library and
-Google
+Desarrolle las siguientes instrucciones en Spark con el lenguaje de programación Scala,
+usando solo documentación de la biblioteca Mllib de Machine Learning de Spark y Google.  
 
 **1. Data**
-* From the Iris.csv dataset found at https://github.com/jcromerohdz/iris.
-* Elaborate the cleanliness of data necessary to be processed by the following algorithm.
-* (Important, this cleaning must be by means of Scala script in Spark).
+* Del conjunto de datos Iris.csv que se encuentra en https://github.com/jcromerohdz/iris.  
+* Elabora la limpieza de los datos necesarios para ser procesados por el siguiente algoritmo.  
+* (Importante, esta limpieza debe realizarse mediante el script Scala en Spark).
 
-**a. Using Spark's Mllib library the Machine Learning Algorithm called Multilayer Perceptron**  
+**a. Usando la biblioteca Mllib de Spark, el Algoritmo de Aprendizaje Automático llamado Multilayer Perceptron**  
 * Iniciamos una nueva sesión de spark:  
 ~~~
 import org.apache.spark.sql.SparkSession
@@ -33,19 +31,19 @@ import org.apache.spark.ml.classification.MultilayerPerceptronClassifier
 import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
 ~~~  
 
-**2. What are the column names?**  
+**2. ¿Cuáles son los nombres de columna?**  
 ~~~
 df.columns
 ~~~  
 > `.columns` sirve para desplegar los nombres de las columnas del dataframe.  
 
-**3. How is the scheme?**  
+**3. ¿Cómo es el esquema?**  
 ~~~
 df.printSchema()
 ~~~  
 > `.printSchema()` sirve para desplegar las columnas del dataframe junto con su tipo de datos.  
 
-**4. Print the first 5 columns.**  
+**4. Imprime las primeras 5 columnas.**  
 ~~~
 df.show(5)
 
@@ -58,13 +56,13 @@ for(row <- df.head(5)){
 > `df.head(5)` imprime las primeras 5 filas del dataframe en forma de arreglos.  
 > El ciclo for se utiliza para desplegar lo mismo que en el codigo anterior, pero con salto de linea en lugar de forma lineal (todo junto).   
 
-**5. Use the describe() method to learn more about the data in the DataFrame.**  
+**5. Use el método describe() para obtener más información sobre los datos en el DataFrame.**  
 ~~~
 df.describe().show()
 ~~~  
 > `describe().show()` imprime un resumen de los datos del dataframe (numero total de datos, promedio, desviacion estandar, valores minimo y maximo).  
 
-**6. Make the corresponding transformation for the categorical data which will be our labels to classify.**  
+**6. Realice la transformación correspondiente para los datos categóricos que serán nuestras etiquetas para clasificar.**  
 * Se seleccionan las columnas del dataframe y se renombra la de "species" como "label".  
 ~~~
 val data = df.select(df("species").as("label"), $"sepal_length", $"sepal_width", $"petal_length", $"petal_width")
@@ -106,12 +104,12 @@ val train = splits(0)
 val test = splits(1)
 ~~~  
 
-**7. Build the classification models and explain your architecture.**  
-* Specify layers for the neural network: input layer of size 4 (features), two intermediate of size 5 and 4, and output of size 3 (classes).  
+**7. Cree los modelos de clasificación y explique su arquitectura.**  
+* Se especifican capas para la red neuronal: capa de entrada de tamaño 4 (características), dos intermedias de tamaño 5 y 4, y salida de tamaño 3 (clases).  
 ~~~
 val layers = Array[Int](4, 5, 4, 3)
 ~~~  
-* Create the trainer and set its parameters:  
+* Se crea el entrenador y se establecen sus parámetros:  
   * `setLayers` se hace referencia a la variable creada en el paso anterior `layers`.  
   * `setLabelCol` se hace referencia a la columna label indexada `indexedLabel`.  
   * `setFeaturesCol` se hace referencia a la columna features indexada `indexedFeatures`.  
