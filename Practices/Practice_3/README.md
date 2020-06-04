@@ -10,7 +10,7 @@ import org.apache.spark.ml.classification.DecisionTreeClassifier
 import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
 import org.apache.spark.ml.feature.{IndexToString, StringIndexer, VectorIndexer}
 ~~~
->  Importamos las librerias para utiliza Pipeline, IndexToString, StringIndexer, VectorIndexer, y las que corresponden al clasificador de árboles de decisión: DecisionTreeClassificationModel y DecisionTreeClassifier.  
+> Libraries were imported to use Pipeline, IndexToString, StringIndexer, VectorIndexer, and those that correspond to the decision tree classifier: DecisionTreeClassificationModel and DecisionTreeClassifier.  
 
 ### 2. Import a Spark Session.  
 ~~~
@@ -22,7 +22,7 @@ import org.apache.spark.sql.SparkSession
   def main(): Unit = {
     val spark = SparkSession.builder.appName("DecisionTreeClassificationExample").getOrCreate()
 ~~~
->  Se crea una nueva sesión de Spark, y se le asigna a la aplicación el nombre: "DecisionTreeClassificationExample".  
+> A new Spark session is created, and the application is named: "DecisionTreeClassificationExample".
 
 ### 4.  Load the data stored in LIBSVM format as a DataFrame.  
 ~~~
@@ -34,8 +34,9 @@ import org.apache.spark.sql.SparkSession
 ~~~
     val labelIndexer = new StringIndexer().setInputCol("label").setOutputCol("indexedLabel").fit(data)
 ~~~
-> Se indexan las etiquetas y se añaden metadatos para que los valores tipo texto pasen a valores numericos.  
-> Se incluyen las etiquetas en el indice mediante un ajuste en todo el dataset (data).  
+
+> The labels are indexed and metadata is added so that the text-type values are converted to numerical values.
+> Tags are included in the index by wrapping throughout the dataset (data). 
 
 ### 6. Automatically identify categorical features, and index them.
 * Set maxCategories so features with > 4 distinct values are treated as continuous.
@@ -53,13 +54,13 @@ import org.apache.spark.sql.SparkSession
 ~~~
     val dt = new DecisionTreeClassifier().setLabelCol("indexedLabel").setFeaturesCol("indexedFeatures")
 ~~~
->  Se entrena el modelo usando DecisionTreeClassifier() y, señalando las columnas para el label y los features.  
+> The model is trained using DecisionTreeClassifier () and, pointing out the columns for the label and the features. 
 
 ### 9. Convert indexed labels back to original labels.  
 ~~~
     val labelConverter = new IndexToString().setInputCol("prediction").setOutputCol("predictedLabel").setLabels(labelIndexer.labels)
 ~~~
->  Se toman las columnas 'labelIndexer' y 'labels', para regresar los valores orginales de las etiquetas indexadas dentro de las columnas 'prediction' y 'predictedLabel'.  
+> The columns 'labelIndexer' and 'labels' are taken, to return the original values ​​of the labels indexed within the columns 'prediction' and 'predictedLabel
 
 ### 10. Chain indexers and tree in a Pipeline.  
 ~~~
@@ -70,19 +71,19 @@ import org.apache.spark.sql.SparkSession
 ~~~
     val model = pipeline.fit(trainingData)
 ~~~
->  Se ajusta el modelo a los datos de entrenamiento.  
+> The model fits the training data.
 
 ### 12. Make predictions.  
 ~~~
     val predictions = model.transform(testData)
 ~~~
->  Se calculan las predcciones del modelo, transformando los datos de entrenamiento por los de prueba.  
+>  Model predictions are calculated, transforming training data into test data.
 
 ### 13. Select example rows to display.  
 ~~~
     predictions.select("predictedLabel", "label", "features").show(5)
 ~~~
-> Se seleccionan las columnas 'predictedLabel', 'label' y 'features' para desplegar en consola las primeras 5 filas de las predicciones calculadas por el modelo.  
+> The columns 'predictedLabel', 'label' and 'features' are selected to display in console the first 5 rows of the predictions calculated by the model.
 
 ### 14. Select (prediction, true label) and compute test error.  
 ~~~
@@ -90,8 +91,8 @@ import org.apache.spark.sql.SparkSession
     val accuracy = evaluator.evaluate(predictions)
     println(s"Test Error = ${(1.0 - accuracy)}")
 ~~~
-> Se utiliza `evaluate` para calcular el nivel de exactitud de las predicciones realizadas por el modelo.  
-> Esta misma cifra se utiliza para obtener el porcentaje de error del modelo, mediante la resta: 1.0 menos el nivel de exactitud.  
+> `Evaluate` is used to calculate the level of accuracy of the predictions made by the model.
+> This same figure is used to obtain the model error percentage, by subtracting: 1.0 minus the level of accuracy.  
 
 ### 15. Print the tree obtained from the model.
 ~~~
@@ -103,5 +104,5 @@ import org.apache.spark.sql.SparkSession
 
 main()
 ~~~
->  Se muestra completo el árbol generado por el modelo; en el aparecen las decisiones utilizadas y los resultados de predicción obtenidos para cada rama. También se menciona el nivel de profundidad y la cantidad de nodos resultantes.  
-> En este caso se obtuvo un `Test Error = 0.02564102564102566` lo cual nos dejaría aproximadamente con un 98% de exactitud, significando que el modelo funciona bastante bien.  
+> The tree generated by the model is shown in full; The decisions used and the prediction results obtained for each branch appear in it. The depth level and the number of resulting nodes are also mentioned.
+> In this case, a `Test Error = 0.02564102564102566` was obtained, which would leave us with approximately 98% accuracy, meaning that the model works quite well. 
