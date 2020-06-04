@@ -37,14 +37,14 @@ import org.apache.spark.sql.SparkSession
 ~~~
     val model = new NaiveBayes().fit(trainingData)
 ~~~
-> Se entrena el modelo y se ajusta a los datos de entrenamiento.   
+> It trains the model and fits the training data.   
 
 ### 7. Select example rows to display.  
 ~~~
     val predictions = model.transform(testData)
         predictions.show()
 ~~~  
-> Se calculan las predicciones al transformar el modelo a los datos de prueba, y se despliegan los resultados.  
+> Predictions are calculated when transforming the model to the test data, and the results are displayed.  
 
 ### 8. Select (prediction, true label) and compute test error.  
 ~~~
@@ -58,7 +58,7 @@ import org.apache.spark.sql.SparkSession
     spark.stop()
   }
 main()
-~~~  
-> Se seleccionan las columnas "label" y "prediction" para calcular el nivel de exactitud del modelo.  
-> Se calcula el nivel de exactitud en base a las predicciones hechas por el modelo y se utiliza la funcion `evaluate`.  
-> Se imprime el resultado, y en este caso se obtuvo un nivel de exactitud del 100%, lo cual nos indica que el modelo es completamente funcional y que las predicciones fueron realizadas de manera correcta.  
+~~~ 
+> The "label" and "prediction" columns are selected to calculate the model accuracy level.  
+> The level of accuracy is calculated based on the predictions made by the model and the 'evaluate' function is used.  
+> The result is printed, and in this case a 100% accuracy level was obtained, which tells us that the model is fully functional and that the predictions were made correctly.
