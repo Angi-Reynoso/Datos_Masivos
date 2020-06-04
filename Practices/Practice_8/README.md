@@ -21,7 +21,7 @@ import org.apache.spark.sql.SparkSession
   def main(): Unit = {
     val spark = SparkSession.builder.appName("MulticlassClassificationEvaluator").getOrCreate()
 ~~~  
-> Tambien se asigna el nombre a la aplicacion: "MulticlassClassificationEvaluator".  
+> The application is also named: "MulticlassClassificationEvaluator".  
 
 ### 4. Load data file.
 ~~~
@@ -43,9 +43,9 @@ val classifier = new LogisticRegression()
 .setFitIntercept(true)
 ~~~
 > Configure the regression object without having to have a base logistic model at hand so it can be fed into the classifier.  
-> Se indica el maximo de iteraciones en 10.  
-> .setTol es un parámetro para la tolerancia de convergencia para algoritmos iterativos.  
-> .setFitIntercept es un valor de tipo Booleano; el cual contesta a la pregunta ¿debería el modelo ajustarse a un término de intercepción?.  
+> The maximum iteration is indicated at 10.  
+> .setTol is a parameter for convergence tolerance for iterative algorithms.  
+> .setFitIntercept is a value of type Boolean; which answers the question should the model conform to an intercept term?  
 
 ### 7. Instantiate the One Vs Rest Classifier.
 ~~~
@@ -76,11 +76,11 @@ val evaluator = new MulticlassClassificationEvaluator()
 ~~~
 val accuracy = evaluator.evaluate(predictions)
 ~~~  
-> Se evaluan las predicciones hechas por el modelo con la funcion `evaluate` para obtener el nivel de exactitud.  
+> Predictions made by the model with the 'evaluate' function are evaluated to obtain the level of accuracy.  
 
 ### 12. Print result.
 ~~~
 println(s"Test Error = ${1 - accuracy}")
 ~~~
-> Se calcula el porcentaje de error con base al resultado obtenido para el nivel de exactitud.  
-> En este caso obtuvimos un 6% (aprox.), lo cual indica que el nivel de exactitud del modelo es bastante alto y por lo tanto muy bueno.  
+> The error percentage is calculated based on the result obtained for the accuracy level.  
+> In this case we got 6% (approx.), which indicates that the accuracy level of the model is quite high and therefore very good.  
