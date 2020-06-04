@@ -6,8 +6,7 @@ SVM or Support Vector Machine is a linear model for classification and regressio
 ~~~
 import org.apache.spark.ml.classification.LinearSVC
 ~~~  
-> Se carga la libreria para usar SVM: `LinearSVC`.  
-
+> The library is loaded to use SVM: `LinearSVC`.
 ### 2. Import a Spark Session.
 ~~~
 import org.apache.spark.sql.SparkSession
@@ -15,7 +14,7 @@ import org.apache.spark.sql.SparkSession
 def main(): Unit = {
     val spark = SparkSession.builder.appName("LinearSVCExample").getOrCreate()
 ~~~  
-> Se crea una nueva sesión de spark, y se asigna el nombre de la aplicación "LinearSVCExample".  
+> A new spark session is created, and the application name "LinearSVCExample" is assigned.  
 
 ### 3. Load the data stored in LIBSVM format as a DataFrame.
 ~~~
@@ -32,10 +31,10 @@ val lsvc = new LinearSVC().setMaxIter(10).setRegParam(0.1)
 ~~~
 val lsvcModel = lsvc.fit(training)
 ~~~  
-> Se ajusta el modelo a los datos de entrenamiento.  
+> The model conforms to the training data.  
 
 ### 6. Print result.
 ~~~
 println(s"Coefficients: ${lsvcModel.coefficients} Intercept: ${lsvcModel.intercept}")
 ~~~  
-> Se imprimen los coeficientes y la intercepción obtenidas con el modelo.  
+> The coefficients and interception obtained with the model are printed.  
