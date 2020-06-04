@@ -1,18 +1,27 @@
-package org.apache.spark.examples.ml
 import  org.apache.spark.mllib.classification.{NaiveBayes, NaiveBayesModel}
 import  org.apache.spark.mllib.util.MLUtils
 
 import org.apache.spark.sql.SparkSession
 
-val data = MLUtils.loadLibSVMFile(sc, "data/mllib/sample_libsvm_data.txt")
+def main(): Unit = {
+    val spark = SparkSession.builder.appName("NaiveBayesExample").getOrCreate()
 
-val Array(training, test) = data.randomSplit(Array(0.6, 0.4))
+    val data = spark.read.format("libsvm").load("sample_libsvm_data.txt")
 
-val model = NaiveBayes.train(training, lambda = 1.0, modelType = "multinomial")
+    val Array(trainingData, testData) = data.randomSplit(Array(0.7, 0.3), seed = 1234L)
 
-val predictionAndLabel = test.map(p => (model.predict(p.features), p.label))
+    val model = new NaiveBayes().fit(trainingData)
+  
+    val predictions = model.transform(testData)
+      predictions.show()
 
-val accuracy = 1.0 * predictionAndLabel.filter(x => x._1 == x._2).count() / test.count()
-model.save(sc, "target/tmp/myNaiveBayesModel")
+    val evaluator = new MulticlassClassificationEvaluator()
+      .setLabelCol("label")
+      .setPredictionCol("prediction")
+      .setMetricName("accuracy")
+    val accuracy = evaluator.evaluate(predictions)
+    println(s"Test set accuracy = $accuracy")
 
-val sameModel = NaiveBayesModel.load(sc, "target/tmp/myNaiveBayesModel")
+    spark.stop()
+  }
+main()
