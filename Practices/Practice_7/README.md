@@ -38,3 +38,5 @@ val lsvcModel = lsvc.fit(training)
 println(s"Coefficients: ${lsvcModel.coefficients} Intercept: ${lsvcModel.intercept}")
 ~~~  
 > The coefficients and interception obtained with the model are printed.  
+> Los coeficientes corresponden a los datos clasificados dentro del modelo, donde los valores positivos (mayores a 0) corresponden a una categoria, los valores negativos (menores a 0) corresponden a otra, y los valores igual a 0 son aquellos que no han podido ser clasificados de manera correcta.  
+> La intercepcion es un coeficiente que se utiliza dentro de la formula del SVM para hacer los calculos necesarios para clasificar a los datos provenientes del dataset.  
