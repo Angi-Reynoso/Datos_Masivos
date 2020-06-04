@@ -29,19 +29,19 @@ import org.apache.spark.ml.classification.MultilayerPerceptronClassifier
 import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
 ~~~  
 
-**2. What are the column names? **
+**2. What are the column names?**
 ~~~
 df.columns
 ~~~  
 > `.columns` it´s used to display the names of the columns of the dataframe.
 
-**3. How is the scheme? ** 
+**3. How is the scheme?** 
 ~~~
 df.printSchema()
 ~~~  
 > `.printSchema()` it's used to display the columns of the dataframe together with their data type.  
 
-**4. Print the first 5 columns. **
+**4. Print the first 5 columns.**
 ~~~
 df.show(5)
 
@@ -54,13 +54,13 @@ for(row <- df.head(5)){
 > `df.head (5)` prints the first 5 rows of the dataframe as arrays.
 > The for loop is used to display the same as in the previous code, but with a line break instead of linear (all together).
 
-**5. Use the describe () method to get more information about the data in the DataFrame. **
+**5. Use the describe () method to get more information about the data in the DataFrame.**
 ~~~
 df.describe().show()
 ~~~  
 > `describe (). show ()` prints a summary of the data in the dataframe (total number of data, average, standard deviation, minimum and maximum values).
 
-** 6. Perform the corresponding transformation for the categorical data that will be our labels to classify. **
+**6. Perform the corresponding transformation for the categorical data that will be our labels to classify.**
 * The columns of the dataframe are selected and the one of "species" is renamed as "label".
 ~~~
 val data = df.select(df("species").as("label"), $"sepal_length", $"sepal_width", $"petal_length", $"petal_width")
@@ -102,7 +102,7 @@ val train = splits(0)
 val test = splits(1)
 ~~~  
 
-** 7. Create the classification models and explain their architecture. **
+**7. Create the classification models and explain their architecture.**
 * Layers are specified for the neural network: input layer of size 4 (characteristics), two intermediate layers of size 5 and 4, and output of size 3 (classes).
 ~~~
 val layers = Array[Int](4, 5, 4, 3)
