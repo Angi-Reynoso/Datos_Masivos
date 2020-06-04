@@ -1,5 +1,5 @@
 # Gradient-Boosted Tree (GBT) Classifier
-Es una técnica de aprendizaje automático utilizada para el análisis de regresión y para problemas de clasificación estadística, que produce un modelo predictivo en forma de un conjunto de modelos de predicción débiles, normalmente árboles de decisión. GBT construye árboles de uno en uno, donde cada árbol nuevo ayuda a corregir los errores cometidos por un árbol previamente entrenado.  
+It's a machine learning technique used for regression analysis and for statistical classification problems, which produces a predictive model in the form of a set of weak prediction models, usually decision trees. GBT builds trees one by one, where each new tree helps correct mistakes made by a previously trained tree.
 
 ## Steps:  
 ### 1. Import libraries.
@@ -20,14 +20,14 @@ import org.apache.spark.sql.SparkSession
 import org.apache.log4j._
 Logger.getLogger("org").setLevel(Level.ERROR)
 ~~~
->  Sirve para reducir los errores desplegados en consola durante la ejecución del código.  
+> It's used to reduce the errors displayed in the console during the execution of the code.
 
 ### 4. Create a Spark session.  
 ~~~
   def main(): Unit = {
     val spark = SparkSession.builder.appName("GradientBoostedTreeClassifierExample").getOrCreate()
 ~~~
->  Se crea una sesión de Spark, y se asigna "GradientBoostedTreeClassifierExample" como nombre de la aplicación.  
+> A Spark session is created, and "GradientBoostedTreeClassifierExample" is assigned as the application name.  
 
 ### 5.  Load and parse the data file, converting it to a DataFrame.
 * Print the schema.
@@ -35,64 +35,65 @@ Logger.getLogger("org").setLevel(Level.ERROR)
     val data = spark.read.format("libsvm").load("sample_libsvm_data.txt")
     data.printSchema()
 ~~~
->  Se carga el dataset desde el archivo "sample_libsvm_data.txt", y se imprime el esquema del mismo.  
+>  The dataset is loaded from the file "sample_libsvm_data.txt", and the schema of the data is printed. 
 
 ### 6. Index labels, adding metadata to the label column.  
 * Fit on whole dataset to include all labels in index.
 ~~~
     val labelIndexer = new StringIndexer().setInputCol("label").setOutputCol("indexedLabel").fit(data)
 ~~~
->  Se indexan las etiquetas en la columna "label", se añaden metadatos para cambiar los valores de tipo string a tipo numerico y se ajusta al dataset (data).  
+> The labels are indexed in the "label" column, metadata is added to change the values ​​from string type to numeric type and it is adjusted to the dataset (data). 
 
 ### 7. Automatically identify categorical features, and index them.
 * Set maxCategories so features with > 4 distinct values are treated as continuous.
 ~~~
     val featureIndexer = new VectorIndexer().setInputCol("features").setOutputCol("indexedFeatures").setMaxCategories(4).fit(data)
 ~~~
-> Se indexa la columna features, y se estable un limite de 4 categorias, para que apartir de ello los datos sean tratados como continuos. También se ajustan los cambios al dataset (data).  
+> The features column is indexed, and a limit of 4 categories is established, so that from this the data is treated as continuous. Changes to the dataset (data) are also adjusted.
 
 ### 8. Split the data into training and test sets.
 ~~~
     val Array(trainingData, testData) = data.randomSplit(Array(0.7, 0.3))
 ~~~
-> Se dividen los datos en 70% entrenamiento y 30% prueba.  
+> The data is divided into 70% training and 30% testing.  
 
 ### 9. Train a GBT model.  
 ~~~
     val gbt = new GBTClassifier().setLabelCol("indexedLabel").setFeaturesCol("indexedFeatures").setMaxIter(10).setFeatureSubsetStrategy("auto")
 ~~~
-> Se entrena el modelo con la función `GBTClassifier()`.  
-> Se usan las columnas indexadas, y se indica un maximo de 10 iteraciones para la ejecución del modelo.  
+
+> The model is trained with the `GBTClassifier ()` function.
+> The indexed columns are used, and a maximum of 10 iterations are indicated for the execution of the model 
 
 ### 10. Convert indexed labels back to original labels.  
 ~~~
     val labelConverter = new IndexToString().setInputCol("prediction").setOutputCol("predictedLabel").setLabels(labelIndexer.labels)
 ~~~
-> Se convierten nuevamente las etiquetas indexadas en sus valores originales, con la función `IndexToString()`.  
+> The indexed labels are converted back to their original values, with the `IndexToString ()` function.
 
 ### 11. Chain indexers and GBT in a Pipeline.  
 ~~~
     val pipeline = new Pipeline().setStages(Array(labelIndexer, featureIndexer, gbt, labelConverter))
 ~~~
-> Se unen los indexadores, el modelo (gbt) y la variable labelConverter dentro del pipeline.  
+> The indexers, the model (gbt) and the labelConverter variable are attached inside the pipeline.
 
 ### 12. Train model. 
 ~~~
     val model = pipeline.fit(trainingData)
 ~~~
-> Se entrena el modelo y se ajusta a los datos de entrenamiento.  
+> The model is trained and adjusted to the training data.
 
 ### 13. Make predictions.  
 ~~~
     val predictions = model.transform(testData)
 ~~~
-> Se hacen las predicciones del modelo y se ajusta a los datos de prueba.  
+> Model predictions are made and fit the test data.
 
 ### 14. Select example rows to display.  
 ~~~
     predictions.select("predictedLabel", "label", "features").show(5)
 ~~~
-> Se seleccionan las columnas "predictedLabel", "label" y "features" para desplegar las primeras 5 filas de las predicciones realizadas por el modelo.  
+> The columns "predictedLabel", "label" and "features" are selected to display the first 5 rows of the predictions made by the model.
 
 ### 15. Select (prediction, true label) and compute test error.  
 ~~~
@@ -101,7 +102,8 @@ Logger.getLogger("org").setLevel(Level.ERROR)
     val accuracy = evaluator.evaluate(predictions)
     println(s"Test Error = ${1.0 - accuracy}")
 ~~~
-> Se calcula el nivel de exactitud del modelo con la función `evaluate`, y usando el resultado se calcula el porcentaje de error con la resta: 1.0 - nivel de exactitud.  
+> The model's level of accuracy is calculated with the `evaluate` function, and using the result the error percentage is calculated with the subtraction: 1.0 - level of accuracy.
+
 
 ### 16. Print result of Trees using GBT (10).
 ~~~
@@ -113,6 +115,6 @@ Logger.getLogger("org").setLevel(Level.ERROR)
 
 main()
 ~~~
-> Se imprimen todos los árboles generados por el modelo, en este caso 10 en total, incluyendo las condiciones y los resultados de las predicciones para cada una de sus ramas.  
-> El modelo arrojo un aproximado del 3% de error, lo cual nos deja con un nivel de exactitud del 97% aproximadamente; esto significa que el modelo trabaja muy bien y las predicciones que realiza son bastante confiables. 
+> All the trees generated by the model are printed, in this case 10 in total, including the conditions and the results of the predictions for each of its branches.
+> The model showed an approximate 3% error, which leaves us with an accuracy level of approximately 97%; This means that the model works very well and the predictions it makes are quite reliable.
 
