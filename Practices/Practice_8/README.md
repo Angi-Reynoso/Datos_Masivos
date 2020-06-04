@@ -33,7 +33,6 @@ val inputData = spark.read.format("libsvm").load("sample_multiclass_classificati
 val Array(train, test) = inputData.randomSplit(Array(0.8, 0.2))
 ~~~
 > Split the data using random split into 80% traning and 20% testing datasets.  
-> `inputData.randomSplit`: randomly splits a RDD with the provided weights.  
 
 ### 6. Instantiate the base classifier.
 ~~~
