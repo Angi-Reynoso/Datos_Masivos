@@ -11,12 +11,10 @@
 * [Practice 8](/Practices/Practice_8/README.md)
 * [Practice 9](/Practices/Practice_9/README.md)
 
-
 ## Unit 2 - Homeworks:  
 * [Homework 1](/Homeworks/README.md#homework-1)  
 * [Homework 2](/Homeworks/README.md#homework-2)
 * [Homework 3](/Homeworks/README.md#homework-3)
-
 
 ## Unit 2 - Exams:  
  * [Exam](/Exams/README.md#Exam)
