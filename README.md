@@ -34,4 +34,10 @@
 * [Homework 3](/Homeworks/README.md#homework-3)
 
 ## Unit 2 - Exams:  
- * [Exam](/Exams/README.md#Exam)
+ * [Exam](/Exams/README.md)
+
+---
+
+## Unit 3 - Exam:  
+ * [Exam](/Exam/README.md)
+ 
