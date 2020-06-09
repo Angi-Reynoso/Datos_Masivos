@@ -35,3 +35,9 @@
 
 ## Unit 2 - Exams:  
  * [Exam](/Exams/README.md#Exam)
+
+---
+
+## Unit 3 - Exam:  
+ * [Exam](/Exam/README.md#Exam)
+ 
