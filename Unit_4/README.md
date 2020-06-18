@@ -10,115 +10,115 @@
 <br>
 
 ## Support Vector Machine (SVM)  
-**1. Iniciar nueva sesión de spark.**  
+**1. Start new spark session.**
 ~~~
 import org.apache.spark.sql.SparkSession
 val spar = SparkSession.builder().getOrCreate()
 ~~~
 
-**2. Código para reducir errores durante la ejecución.**  
+**2. Code to reduce errors during execution.**
 ~~~
 import org.apache.log4j._
 Logger.getLogger("org").setLevel(Level.ERROR)
 ~~~
 
-**3. Cargar el archivo con el dataset.**  
+**3. Upload the file with the dataset.**
 ~~~
 val dataset = spark.read.option("header","true").option("inferSchema","true").csv("bank-additional-full.csv")
 ~~~
 > Se utilizan la opciones "header" e "inferSchema" para obtener el título y tipo de dato de cada columna en el dataset.  
 
-**4. Importar las librerías para trabajar con SVM.**  
+**4. Import libraries to work with SVM.** 
 ~~~
 import org.apache.spark.ml.classification.LinearSVC
 import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
 ~~~
-> La primera librería sí corresponde y es necesaria para la implementación del modelo SVM, no obstante, la segunda librería se utiliza para evaluar la precisión de los modelos de clasificación, ya sea que se trate de SVM o algún otro algoritmo.  
+> The first library does correspond and is necessary for the implementation of the SVM model, however, the second library is used to evaluate the precision of the classification models, whether it is SVM or some other algorithm.
 
-**5. Transformación de los datos.**  
+**5. Data transformation.** 
 ~~~
 val coly = when($"y".contains("yes"), 1.0).otherwise(0.0)
 val df = dataset.withColumn("y", coly)
 ~~~
-> Se buscan los valores iguales a "yes" de la columna "y", y se sustituyen por 1, o en el caso contrario por 0.  
-> Una vez cambiados los valores, estos se vuelven a insertar en la columna "y".  
+> The values equal to "yes" of the column "y" are searched, and are replaced by 1, or otherwise by 0.
+> Once the values have been changed, they are inserted again in the "y" column.
 
-**6. Transformación para los datos categoricos (etiquetas a clasificar).**  
+**6. Transformation for categorical data (labels to classify)**
 ~~~
 val data = df.select(df("y").as("label"), $"age",$"duration",$"campaign",$"pdays",$"previous",$"emp_var_rate",$"cons_price_idx",$"cons_conf_idx",$"euribor3m",$"nr_employed")
 ~~~
-> Se seleccionan las columnas del dataframe y se renombra la columna "y" como "label".  
+> The columns of the dataframe are selected and the column "y" is renamed as "label".
 
-**7. Importar las librerias VectorAssembler y Vectors.**  
+**7. Import the VectorAssembler and Vectors libraries.**
 ~~~
 import org.apache.spark.ml.feature.VectorAssembler
 import org.apache.spark.ml.linalg.Vectors
 ~~~
 
-**8. Crear nuevo objeto VectorAssembler.**  
+**8. Create new VectorAssembler object.**
 ~~~
 val assembler = new VectorAssembler().setInputCols(Array("age","duration","campaign","pdays","previous","emp_var_rate","cons_price_idx","cons_conf_idx","euribor3m","nr_employed")).setOutputCol("features")
 val features = assembler.transform(data)
 ~~~
-> Se crea un nuevo objeto VectorAssembler llamado assembler para guardar el resto de las columnas como features.
-> Se crea la variable features para guardar el dataframe con los cambios anteriores.  
+> A new VectorAssembler object called assembler is created to save the rest of the columns as features.
+> The variable features is created to save the dataframe with the previous changes.
 
-**9. Importar la libreria StringIndexer.**  
+**9. Import the StringIndexer library.** 
 ~~~
 import org.apache.spark.ml.feature.StringIndexer
 val labelIndexer = new StringIndexer().setInputCol("label").setOutputCol("indexedLabel").fit(features)
 ~~~
-> Indexamos la columna label y añadimos metadata, esto es para cambiar los valores tipo texto de las etiquetas por valores numéricos.  
-> También se hace un ajuste a todo el dataset para incluir todas las etiquetas en el índice.  
+> The label column was indexed and the metadata was added, this is to change the text-type values ​​of the labels by numerical values.
+> An adjustment was also made to the entire dataset to include all the labels in the index.  
 
-**10. Importar la librería VectorIndexer.**  
+**10. Import the VectorIndexer library.**
 ~~~
 import org.apache.spark.ml.feature.VectorIndexer
 val featureIndexer = new VectorIndexer().setInputCol("features").setOutputCol("indexedFeatures").setMaxCategories(4).fit(features)
 ~~~
-> Se indexa la columna "features" y se establece el número máximo de categorias a tomar como 4.  
-> También se hace un ajuste a todo el dataset para incluir todas las etiquetas en el índice.  
+> The "features" column is indexed and the maximum number of categories to take as 4 is established.
+> An adjustment is also made to the entire dataset to include all the labels in the index.
 
-**11. Dividir datos.**  
+**11. Split data.** 
 ~~~
 val splits = features.randomSplit(Array(0.7, 0.3), seed = 1234L)
 val train = splits(0)
 val test = splits(1)
 ~~~
-> Se dividen los datos en datos de entrenamiento (0.7) y de prueba (0.3) con randomSplit.  
-> Se crean las variables train y test para guardar los datos divididos.  
+> The data is divided into training data (0.7) and test data (0.3) with randomSplit.
+> The train and test variables are created to save the divided data.
 
-**12. Tiempo de ejecución.**  
+**12. Execution time.**  
 ~~~
 val t1 = System.nanoTime
 ~~~
 > System.nanoTime se utiliza para medir la diferencia de tiempo transcurrido.  
-> Esta línea se coloca antes de que comience el código del cual se desea tomar el tiempo de ejecución.  
+> This line is placed before the code from which you want to take the runtime begins.  
 
-**13. Crear modelo.**  
+**13. Create model.**
 ~~~
 val lsvc = new LinearSVC().setMaxIter(100).setRegParam(0.1)
 ~~~
-> Se crea el modelo (lsvc) y se establecen sus parámetros.  
-> * setMaxIter = número máximo de iteraciones a realizar por el modelo.  
-> * setRegParam = establecer el parámetro de regularización. El valor predeterminado es 0.0.  
+> The model (lsvc) is created and its parameters are established.
+> * setMaxIter = maximum number of iterations to be made by the model.
+> * setRegParam = set the regularization parameter. The default value is 0.0.
 
-**14. Ajustar el modelo.**  
+**14. Fit the model.**
 ~~~
 val lsvcModel = lsvc.fit(test)
 ~~~
-> Se ajusta el modelo para que trabaje con los datos de prueba y, posteriormente se puedan obtener los coeficientes y la intercepción.  
+> The model is adjusted to work with the test data and, subsequently, the coefficients and interception can be obtained.
 
-**15. Importar la librería para utilizar Pipeline.**  
+**15. Import the library to use Pipeline.** 
 ~~~
 import org.apache.spark.ml.Pipeline
 val pipeline = new Pipeline().setStages(Array(labelIndexer, featureIndexer, lsvc))
 val model = pipeline.fit(train)
 ~~~
-> Se unen los indexadores y el modelo en una Pipeline.  
-> Se entrena el modelo, y se ajusta la Pipeline para trabajar con los datos de entrenamiento.  
+> The indexers and the model are joined in a Pipeline.
+> The model is trained, and the Pipeline is adjusted to work with the training data.
 
-**16. Imprimir los resultados del modelo.**  
+**16. Print the model results.**  
 ~~~
 val predictions = model.transform(test)
 val predictionAndLabels = predictions.select("prediction", "label")
@@ -127,37 +127,36 @@ val evaluator = new MulticlassClassificationEvaluator()
 .setPredictionCol("prediction")
 .setMetricName("accuracy")
 ~~~
-> Se utiliza transform para cambiar los datos a utilizar, de train a test.  
-> Se seleccionan las columnas de prediccion y "label", y se guardan dentro de la variable "predictionAndLabels".  
-> Se crea un evaluador con la función MulticlassClassificationEvaluator(), en donde se seleccionan las columnas "indexedLabel" y "prediction", y se calcula el nivel de exactitud (accuracy) del modelo.  
+> Transform is used to change the data to be used, from train to test.
+> The prediction and "label" columns are selected, and are stored inside the "predictionAndLabels" variable.
+> An evaluator is created with the MulticlassClassificationEvaluator () function, where the columns "indexedLabel" and "prediction" are selected, and the level of accuracy of the model is calculated. 
 
 ~~~
 val accuracy = evaluator.evaluate(predictions)
 println("Test Error = " + (1.0 - accuracy))
 println("Accuracy = " + accuracy)
 ~~~
-> Se utiliza evaluate para valorar las predicciones hechas por el modelo.  
-> Se imprime en consola el porcentaje de error como resultado de la resta: 1.0 - accuracy; así como el valor obtenido para el accuracy.  
+> Evaluate is used to evaluate the predictions made by the model.
+> The error percentage is printed in the console as a result of the subtraction: 1.0 - accuracy; as well as the value obtained for the accuracy.
 
 ~~~
 println(s"Coefficients: ${lsvcModel.coefficients} Intercept: ${lsvcModel.intercept}")
 ~~~
-> Se imprimen los coeficientes y la intercepción obtenidas para el modelo.  
+> The coefficients and interception obtained for the model are printed.
 
-**17. Imprimir tiempo total de ejecución.**  
+**17. Print total execution time.** 
 ~~~
 val duration = (System.nanoTime - t1) / 1e9d
 ~~~
-> Esta línea se coloca al final del código del cual se desea tomar el tiempo de ejecución.  
-> El tiempo se obtiene como resultado de la resta: tiempo actual en nanosegundos (System.nanoTime) menos el tiempo al iniciar el código (en este caso la variable denominada t1).  
-> Como el resultado se encuentra en nanosegundos se utiliza una división entre 1e9d para obtener el tiempo en segundos.  
-> * `1e9d` = operación 10^9, y la "d" es para indicar que el resultado sea de tipo double.  
+> This line is placed at the end of the code from which you want to take the runtime.
+> The time is obtained as a result of the subtraction: current time in nanoseconds (System.nanoTime) minus the time when starting the code (in this case the variable named t1).
+> Since the result is in nanoseconds, a division between 1e9d is used to obtain the time in seconds.
+> * `1e9d` = operation 10 ^ 9, and the" d "is to indicate that the result is of type double.
 
-#### Resultados: 
-* Porcentaje de error promedio = 0.10981912144702843 ≈ 11%  
-* Nivel de exactitud promedio = 0.8901808785529716 ≈ 89%  
-* Tiempo de ejecución promedio = 367.97762408  
-
+#### Results:
+* Average error percentage = 0.10981912144702843 ≈ 11%
+* Average accuracy level = 0.8901808785529716 ≈ 89%
+* Average execution time = 367.97762408
 
 ---
 
