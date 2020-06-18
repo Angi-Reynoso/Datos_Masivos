@@ -310,127 +310,127 @@ val duration = (System.nanoTime - t1) / 1e9d
 <br>
 
 ## Logistic Regression  
-**1. Iniciar nueva sesión de spark.**  
+**1. Start a new session of spark.**
 ~~~
 import org.apache.spark.sql.SparkSession
 val spar = SparkSession.builder().getOrCreate()
 ~~~
 
-**2. Código para reducir errores durante la ejecución.**  
+**2. Code to reduce errors during execution.**
 ~~~
 import org.apache.log4j._
-Logger.getLogger("org").setLevel(Level.ERROR)
+Logger.getLogger ("org"). SetLevel (Level.ERROR)
 ~~~
 
-**3. Cargar el archivo con el dataset.**  
+**3. Upload the file with the dataset.**
 ~~~
-val dataset  = spark.read.option("header","true").option("inferSchema", "true").format("csv").load("bank-additional-full.csv")
+val dataset = spark.read.option ("header", "true"). option ("inferSchema", "true"). format ("csv"). load ("bank-additional-full.csv")
 ~~~
-> Se utilizan la opciones "header" e "inferSchema" para obtener el título y tipo de dato de cada columna en el dataset.  
+> The "header" and "inferSchema" options are used to obtain the title and data type of each column in the dataset.
 
-**4. Importar las librerías para trabajar con Logistic Regression.**  
+**4. Import the libraries to work with Logistic Regression.** 
 ~~~
 import org.apache.spark.ml.classification.LogisticRegression
 import org.apache.spark.mllib.evaluation.MulticlassMetrics 
 ~~~
-> La primera librería corresponde y es necesaria para la implementación del modelo de Logistic Regression.  
-> La segunda librería es un tanto vieja, sin embargo, es la que se utiliza para evaluar la precisión de este tipo de algoritmo.  
+> The first library corresponds to and is necessary for the implementation of the Logistic Regression model.
+> The second library is somewhat old, however, it is the one used to evaluate the precision of this type of algorithm.
 
-**5. Transformación de los datos.**  
+**5. Data transformation.**
 ~~~
 val coly = when($"y".contains("yes"), 1.0).otherwise(0.0)
 val df = dataset.withColumn("y", coly)
 ~~~
-> Se buscan los valores iguales a "yes" de la columna "y", y se sustituyen por 1, o en el caso contrario por 0.  
-> Una vez cambiados los valores, estos se vuelven a insertar en la columna "y".  
+> The values equal to "yes" of the column "y" are searched, and are replaced by 1, or otherwise by 0.
+> Once the values have been changed, they are inserted again in the "y" column.
 
-**6. Transformación para los datos categoricos (etiquetas a clasificar).**  
+**6. Transformation for categorical data (labels to classify)**  
 ~~~
-val data = df.select(df("y").as("label"), $"age",$"duration",$"campaign",$"pdays",$"previous",$"emp_var_rate",$"cons_price_idx",$"cons_conf_idx",$"euribor3m",$"nr_employed")
+val data = df.select(df("y").as("label"), $"age",$"duration",$"campaign",$"pdays",$"previous",$"emp_var_rate",$"cons_price_idx",$"cons_conf_idx",$"euribor3m",$"nr_employ")
 ~~~
-> Se seleccionan las columnas del dataframe y se renombra la columna "y" como "label".  
+> The columns of the dataframe are selected and the column "y" is renamed as "label".
 
-**7. Importar las librerias VectorAssembler y Vectors.**  
+**7. Import the VectorAssembler and Vectors libraries.**
 ~~~
 import org.apache.spark.ml.feature.VectorAssembler
 import org.apache.spark.ml.linalg.Vectors
 ~~~
 
-**8. Crear nuevo objeto VectorAssembler.**  
+**8. Create new VectorAssembler object.**  
 ~~~
 val assembler = (new VectorAssembler()
 .setInputCols(Array("age","duration","campaign","pdays","previous","emp_var_rate","cons_price_idx","cons_conf_idx","euribor3m","nr_employed"))
 .setOutputCol("features"))
 ~~~
-> Se crea un nuevo objeto VectorAssembler llamado assembler para guardar el resto de las columnas como features.  
+> A new VectorAssembler object called assembler is created to save the rest of the columns as features.
 
-**9. Dividir datos.**  
+**9. Split data.**
 ~~~
 val Array(training, test) = data.randomSplit(Array(0.7, 0.3), seed = 1234L)
 ~~~
-> Se dividen los datos en datos de entrenamiento (0.7) y de prueba (0.3) con randomSplit.  
-> Los datos divididos se guardan como training y test.  
+> The data is divided into training data (0.7) and test data (0.3) with randomSplit.
+> The divided data is saved as training and test.
 
-**10. Tiempo de ejecución.**  
+**10. Execution time.**
 ~~~
 val t1 = System.nanoTime
 ~~~
-> System.nanoTime se utiliza para medir la diferencia de tiempo transcurrido.  
-> Esta línea se coloca antes de que comience el código del cual se desea tomar el tiempo de ejecución.  
+> System.nanoTime is used to measure the difference in elapsed time.
+> This line is placed before the code from which you want to take the runtime begins.
 
-**11. Crear modelo.**  
+**11. Create model.**
 ~~~
-val lr = new LogisticRegression().setMaxIter(100)
+val lr = new LogisticRegression (). setMaxIter (100)
 ~~~
-> Se crea el modelo (lr) y se establecen sus parámetros.  
-> * setMaxIter = número máximo de iteraciones a realizar por el modelo.   
+> The model (lr) is created and its parameters are established.
+> * setMaxIter = maximum number of iterations to be made by the model.
 
-**12. Importar la librería para utilizar Pipeline.**  
+**12. Import the library to use Pipeline.**
 ~~~
 import org.apache.spark.ml.Pipeline
 val pipeline = new Pipeline().setStages(Array(assembler,lr))
 val model = pipeline.fit(training)
 ~~~
-> Se unen el assembler y el modelo en una Pipeline.  
-> Se entrena el modelo, y se ajusta la Pipeline para trabajar con los datos de entrenamiento.  
+> The assembler and the model are joined in a Pipeline.
+> The model is trained, and the Pipeline is adjusted to work with the training data.
 
-**13. Imprimir los resultados del modelo.**  
+**13. Print the model results.**
 ~~~
 val results = model.transform(test)
 val predictionAndLabels = results.select($"prediction",$"label").as[(Double, Double)].rdd
 val metrics = new MulticlassMetrics(predictionAndLabels)
 ~~~
-> Se utiliza transform para cambiar los datos a utilizar, de train a test.  
-> Se convierten los resultados de prueba (test) en RDD utilizando .as y .rdd.  
-> * .rdd = estructura de datos de spark para ver los resultados.  
+> Transform is used to change the data to use, from train to test.
+> Convert test results to RDD using .as and .rdd.
+> * .rdd = spark data structure to see the results.
 
-> Se inicializa un objeto MulticlassMetrics().  
-> * metrics = se utiliza para realizar distintas pruebas para comprobar la precisión del modelo.  
+> A MulticlassMetrics () object is initialized.
+> * metrics = is used to perform various tests to check the accuracy of the model.
 
 ~~~
 println("Confusion matrix:")
 println(metrics.confusionMatrix)
 ~~~
-> Se imprime la matriz de confusión para las predicciones del modelo.  
+> The confusion matrix is printed for the model predictions.
 
 ~~~
 metrics.accuracy
 ~~~
-> Se imprime el nivel de exactitud (accuracy) del modelo.  
+> The level of accuracy of the model is printed.
 
-**14. Imprimir tiempo total de ejecución.**  
+**14. Print total execution time.**
 ~~~
 val duration = (System.nanoTime - t1) / 1e9d
 ~~~
-> Esta línea se coloca al final del código del cual se desea tomar el tiempo de ejecución.  
-> El tiempo se obtiene como resultado de la resta: tiempo actual en nanosegundos (System.nanoTime) menos el tiempo al iniciar el código (en este caso la variable denominada t1).  
-> Como el resultado se encuentra en nanosegundos se utiliza una división entre 1e9d para obtener el tiempo en segundos.  
-> * `1e9d` = operación 10^9, y la "d" es para indicar que el resultado sea de tipo double.  
+> This line is placed at the end of the code from which you want to take the runtime.
+> The time is obtained as a result of the subtraction: current time in nanoseconds (System.nanoTime) minus the time when starting the code (in this case the variable named t1).
+> Since the result is in nanoseconds, a division between 1e9d is used to obtain the time in seconds.
+> * `1e9d` = operation 10 ^ 9, and the" d "is to indicate that the result is of type double.
 
-#### Resultados: 
-* Porcentaje de error promedio = 0.0900355297157 ≈ 9%  
-* Nivel de exactitud promedio = 0.9099644702842378 ≈ 91%  
-* Tiempo de ejecución promedio = 9.6360462944  
+#### Results:
+* Average error percentage = 0.0900355297157 ≈ 9%
+* Average accuracy level = 0.9099644702842378 ≈ 91%
+* Average run time = 9.6360462944
 
 
 ---
@@ -438,84 +438,84 @@ val duration = (System.nanoTime - t1) / 1e9d
 <br>
 
 ## Multilayer Perceptron  
-**1. Iniciar nueva sesión de spark.**  
+
+**1. Start a new session of spark.**
 ~~~
 import org.apache.spark.sql.SparkSession
-val spar = SparkSession.builder().getOrCreate()
+val spar = SparkSession.builder (). getOrCreate ()
 ~~~
 
-**2. Código para reducir errores durante la ejecución.**  
+**2. Code to reduce errors during execution.**
 ~~~
 import org.apache.log4j._
-Logger.getLogger("org").setLevel(Level.ERROR)
+Logger.getLogger ("org"). SetLevel (Level.ERROR)
 ~~~
 
-**3. Cargar el archivo con el dataset.**  
+**3. Upload the file with the dataset.**
 ~~~
-val df = spark.read.option("header", "true").option("inferSchema","true")csv("bank-additional-full.csv")
+val df = spark.read.option ("header", "true"). option ("inferSchema", "true") csv ("bank-additional-full.csv")
 ~~~
-> Se utilizan la opciones "header" e "inferSchema" para obtener el título y tipo de dato de cada columna en el dataset.  
+> The "header" and "inferSchema" options are used to obtain the title and data type of each column in the dataset.
 
-**4. Importar las librerías para trabajar con Multilayer Perceptron.**  
+**4. Import the libraries to work with Multilayer Perceptron.**
 ~~~
 import org.apache.spark.ml.classification.MultilayerPerceptronClassifier
 import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
 ~~~
-> La primera librería sí corresponde y es necesaria para la implementación del modelo de Multilayer Perceptron, no obstante, la segunda librería se utiliza para evaluar la precisión de los modelos de clasificación, ya sea que se trate de Multilayer Perceptron o algún otro algoritmo.  
+> The first library does correspond and is necessary for the implementation of the Multilayer Perceptron model, however, the second library is used to evaluate the accuracy of the classification models, whether it is Multilayer Perceptron or some other algorithm.
 
-**5. Transformación para los datos categoricos (etiquetas a clasificar).**  
+**5. Transformation for categorical data (labels to classify)**
 ~~~
 val data = df.select(df("y").as("label"), $"age",$"duration",$"campaign",$"pdays",$"previous",$"emp_var_rate",$"cons_price_idx",$"cons_conf_idx",$"euribor3m",$"nr_employed")
 ~~~
-> Se seleccionan las columnas del dataframe y se renombra la columna "y" como "label".  
+> The columns of the dataframe are selected and the column "y" will be renamed as "label".  
 
 **6. Importar las librerias VectorAssembler y Vectors.**  
 ~~~
 import org.apache.spark.ml.feature.VectorAssembler
 import org.apache.spark.ml.linalg.Vectors
 ~~~
-
-**7. Crear nuevo objeto VectorAssembler.**  
+**7. Create new VectorAssembler object.**
 ~~~
-val assembler = new VectorAssembler().setInputCols(Array("age","duration","campaign","pdays","previous","emp_var_rate","cons_price_idx","cons_conf_idx","euribor3m","nr_employed")).setOutputCol("features")
-val features = assembler.transform(data)
+val assembler = new VectorAssembler (). setInputCols (Array ("age", "duration", "campaign", "pdays", "previous", "emp_var_rate", "cons_price_idx", "cons_conf_idx", "euribor3m", "nr_employed ")). setOutputCol (" features ")
+val features = assembler.transform (data)
 ~~~
-> Se crea un nuevo objeto VectorAssembler llamado assembler para guardar el resto de las columnas como features.
-> Se crea la variable features para guardar el dataframe con los cambios anteriores.  
+> A new VectorAssembler object called assembler is created to save the rest of the columns as features.
+> The variable features is created to save the dataframe with the previous changes.
 
-**8. Importar la libreria StringIndexer.**  
+**8. Import the StringIndexer library.**
 ~~~
 import org.apache.spark.ml.feature.StringIndexer
-val labelIndexer = new StringIndexer().setInputCol("label").setOutputCol("indexedLabel").fit(features)
+val labelIndexer = new StringIndexer (). setInputCol ("label"). setOutputCol ("indexedLabel"). fit (features)
 ~~~
-> Indexamos la columna label y añadimos metadata, esto es para cambiar los valores tipo texto de las etiquetas por valores numéricos.  
-> También se hace un ajuste a todo el dataset para incluir todas las etiquetas en el índice.  
+> We index the label column and add metadata, this is to change the text-type values ​​of the labels by numerical values.
+> An adjustment is also made to the entire dataset to include all the labels in the index.
 
-**9. Importar la librería VectorIndexer.**  
+**9. Import the VectorIndexer library.**
 ~~~
 import org.apache.spark.ml.feature.VectorIndexer
-val featureIndexer = new VectorIndexer().setInputCol("features").setOutputCol("indexedFeatures").setMaxCategories(4).fit(features)
+val featureIndexer = new VectorIndexer (). setInputCol ("features"). setOutputCol ("indexedFeatures"). setMaxCategories (4) .fit (features)
 ~~~
-> Se indexa la columna "features" y se establece el número máximo de categorias a tomar como 4.  
-> También se hace un ajuste a todo el dataset para incluir todas las etiquetas en el índice.  
+> The "features" column is indexed and the maximum number of categories to be taken is set to 4.
+> An adjustment is also made to the entire dataset to include all the labels in the index.
 
-**10. Dividir datos.**  
+**10. Split data.**
 ~~~
-val splits = features.randomSplit(Array(0.7, 0.3), seed = 1234L)
-val train = splits(0)
-val test = splits(1)
+val splits = features.randomSplit (Array (0.7, 0.3), seed = 1234L)
+val train = splits (0)
+val test = splits (1)
 ~~~
-> Se dividen los datos en datos de entrenamiento (0.7) y de prueba (0.3) con randomSplit.  
-> Se crean las variables train y test para guardar los datos divididos.  
+> The data is divided into training data (0.7) and test data (0.3) with randomSplit.
+> The train and test variables are created to save the divided data.
 
-**11. Tiempo de ejecución.**  
+**11. Execution time.**
 ~~~
 val t1 = System.nanoTime
 ~~~
-> System.nanoTime se utiliza para medir la diferencia de tiempo transcurrido.  
-> Esta línea se coloca antes de que comience el código del cual se desea tomar el tiempo de ejecución.  
+> System.nanoTime is used to measure the difference in elapsed time.
+> This line is placed before the code from which you want to take the runtime begins.
 
-**12. Especificar capas para la red neuronal.**  
+**12. Specify layers for the neural network.**
 ~~~
 val layers = Array[Int](10, 11, 3, 2)
 ~~~
@@ -524,74 +524,74 @@ val layers = Array[Int](10, 11, 3, 2)
 > * Dos capas intermedias de tamaño 11 y 3.  
 > * Capa de salida de tamaño 2 (clases).  
 
-**13. Crear modelo.**  
+**13. Create model.**
 ~~~
-val trainer = new MultilayerPerceptronClassifier()
-.setLayers(layers)
-.setLabelCol("indexedLabel")
-.setFeaturesCol("indexedFeatures")
-.setBlockSize(128)
-.setSeed(1234L)
-.setMaxIter(100)
+val trainer = new MultilayerPerceptronClassifier ()
+.setLayers (layers)
+.setLabelCol ("indexedLabel")
+.setFeaturesCol ("indexedFeatures")
+.setBlockSize (128)
+.setSeed (1234L)
+.setMaxIter (100)
 ~~~
-> Se crea el entrenador y se establecen sus parámetros.  
-> * setLayers = variable creada en el paso anterior layers.  
-> * setLabelCol = columna label indexada indexedLabel.  
-> * setFeaturesCol = columna features indexada indexedFeatures.  
-> * setBlockSize = tamaño del bloque por defecto en kilobytes (128).  
-> * setSeed = aleatoriedad en los datos (1234L).  
-> * setMaxIter = número máximo de iteraciones a realizar por el modelo (100 es el valor predeterminado).  
+> The coach is created and its parameters are established.
+> * setLayers = variable created in the previous step layers.
+> * setLabelCol = indexed label column indexedLabel.
+> * setFeaturesCol = indexed features column indexedFeatures.
+> * setBlockSize = default block size in kilobytes (128).
+> * setSeed = randomness in the data (1234L).
+> * setMaxIter = maximum number of iterations to be made by the model (100 is the default value).
 
-**14. Importar librería IndexToString.**  
+**14. Import IndexToString library.**
 ~~~
 import org.apache.spark.ml.feature.IndexToString
-val labelConverter = new IndexToString()
-.setInputCol("prediction")
-.setOutputCol("predictedLabel")
-.setLabels(labelIndexer.labels)
+val labelConverter = new IndexToString ()
+.setInputCol ("prediction")
+.setOutputCol ("predictedLabel")
+.setLabels (labelIndexer.labels)
 ~~~
-> Se convierten los valores de las etiquetas indexadas en los de las etiquetas originales, y se les asigna el nombre de "predictedLabel".  
+> The values of the indexed tags are converted into those of the original tags, and are named "predictedLabel".
 
-**15. Importar la librería para utilizar Pipeline.**  
+**15. Import the library to use Pipeline.**
 ~~~
 import org.apache.spark.ml.Pipeline
-val pipeline = new Pipeline()
-.setStages(Array(labelIndexer, featureIndexer, trainer, labelConverter))
-val model = pipeline.fit(train)
+val pipeline = new Pipeline ()
+.setStages (Array (labelIndexer, featureIndexer, trainer, labelConverter))
+val model = pipeline.fit (train)
 ~~~
-> Se unen los indexadores y el modelo (trainer) en una Pipeline.  
-> Se entrena el modelo, y se ajusta la Pipeline para trabajar con los datos de entrenamiento.  
+> The indexers and the model (trainer) are joined in a Pipeline.
+> The model is trained, and the Pipeline is adjusted to work with the training data.
 
-**16. Imprimir los resultados del modelo.**  
+**16. Print the model results.**
 ~~~
-val predictions = model.transform(test)
-val predictionAndLabels = predictions.select("prediction", "label")
-val evaluator = new MulticlassClassificationEvaluator()
-.setLabelCol("indexedLabel")
-.setPredictionCol("prediction")
-.setMetricName("accuracy")
+val predictions = model.transform (test)
+val predictionAndLabels = predictions.select ("prediction", "label")
+val evaluator = new MulticlassClassificationEvaluator ()
+.setLabelCol ("indexedLabel")
+.setPredictionCol ("prediction")
+.setMetricName ("accuracy")
 ~~~
-> Se utiliza transform para cambiar los datos a utilizar, de train a test.  
-> Se seleccionan las columnas de prediccion y "label", y se guardan dentro de la variable "predictionAndLabels".  
-> Se crea un evaluador con la función MulticlassClassificationEvaluator(), en donde se seleccionan las columnas "indexedLabel" y "prediction", y se calcula el nivel de exactitud (accuracy) del modelo.  
+> Transform is used to change the data to be used, from train to test.
+> The prediction and "label" columns are selected, and are stored inside the "predictionAndLabels" variable.
+> An evaluator is created with the MulticlassClassificationEvaluator () function, where the columns "indexedLabel" and "prediction" are selected, and the level of accuracy of the model is calculated.
 
 ~~~
-val accuracy = evaluator.evaluate(predictions)
-println("Test Error = " + (1.0 - accuracy))
+val accuracy = evaluator.evaluate (predictions)
+println ("Test Error =" + (1.0 - accuracy))
 ~~~
-> Se utiliza evaluate para valorar las predicciones hechas por el modelo.  
-> Se imprime en consola el porcentaje de error como resultado de la resta: 1.0 - accuracy.  
+> Evaluate is used to evaluate the predictions made by the model.
+> The error percentage is printed in the console as a result of the subtraction: 1.0 - accuracy.
 
-**17. Imprimir tiempo total de ejecución.**  
+**17. Print total execution time.**
 ~~~
 val duration = (System.nanoTime - t1) / 1e9d
 ~~~
-> Esta línea se coloca al final del código del cual se desea tomar el tiempo de ejecución.  
-> El tiempo se obtiene como resultado de la resta: tiempo actual en nanosegundos (System.nanoTime) menos el tiempo al iniciar el código (en este caso la variable denominada t1).  
-> Como el resultado se encuentra en nanosegundos se utiliza una división entre 1e9d para obtener el tiempo en segundos.  
-> * `1e9d` = operación 10^9, y la "d" es para indicar que el resultado sea de tipo double.  
+> This line is placed at the end of the code from which you want to take the runtime.
+> The time is obtained as a result of the subtraction: current time in nanoseconds (System.nanoTime) minus the time when starting the code (in this case the variable named t1).
+> Since the result is in nanoseconds, a division between 1e9d is used to obtain the time in seconds.
+> * `1e9d` = operation 10 ^ 9, and the" d "is to indicate that the result is of type double.
 
-#### Resultados: 
-* Porcentaje de error promedio = 0.10981912144702843 ≈ 11%  
-* Nivel de exactitud promedio = 0.8901808785529716 ≈ 89%  
-* Tiempo de ejecución promedio = 25.0155136536  
+#### Results:
+* Average error percentage = 0.10981912144702843 ≈ 11%
+* Average accuracy level = 0.8901808785529716 ≈ 89%
+* Average execution time = 25.0155136536
