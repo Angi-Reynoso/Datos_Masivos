@@ -149,7 +149,7 @@ println(s"Coefficients: ${lsvcModel.coefficients} Intercept: ${lsvcModel.interce
 val duration = (System.nanoTime - t1) / 1e9d
 ~~~
 > Esta línea se coloca al final del código del cual se desea tomar el tiempo de ejecución.  
-> El tiempo se obtiene como resulado de la resta: tiempo actual en nanosegundos (System.nanoTime) menos el tiempo al iniciar el código (en este caso la variable denominada t1).  
+> El tiempo se obtiene como resultado de la resta: tiempo actual en nanosegundos (System.nanoTime) menos el tiempo al iniciar el código (en este caso la variable denominada t1).  
 > Como el resultado se encuentra en nanosegundos se utiliza una división entre 1e9d para obtener el tiempo en segundos.  
 > * `1e9d` = operación 10^9, y la "d" es para indicar que el resultado sea de tipo double.  
 
@@ -299,7 +299,7 @@ println(s"Learned classification tree model:\n ${treeModel.toDebugString}")
 val duration = (System.nanoTime - t1) / 1e9d
 ~~~
 > Esta línea se coloca al final del código del cual se desea tomar el tiempo de ejecución.  
-> El tiempo se obtiene como resulado de la resta: tiempo actual en nanosegundos (System.nanoTime) menos el tiempo al iniciar el código (en este caso la variable denominada t1).  
+> El tiempo se obtiene como resultado de la resta: tiempo actual en nanosegundos (System.nanoTime) menos el tiempo al iniciar el código (en este caso la variable denominada t1).  
 > Como el resultado se encuentra en nanosegundos se utiliza una división entre 1e9d para obtener el tiempo en segundos.  
 > * `1e9d` = operación 10^9, y la "d" es para indicar que el resultado sea de tipo double.  
 
@@ -427,7 +427,7 @@ metrics.accuracy
 val duration = (System.nanoTime - t1) / 1e9d
 ~~~
 > Esta línea se coloca al final del código del cual se desea tomar el tiempo de ejecución.  
-> El tiempo se obtiene como resulado de la resta: tiempo actual en nanosegundos (System.nanoTime) menos el tiempo al iniciar el código (en este caso la variable denominada t1).  
+> El tiempo se obtiene como resultado de la resta: tiempo actual en nanosegundos (System.nanoTime) menos el tiempo al iniciar el código (en este caso la variable denominada t1).  
 > Como el resultado se encuentra en nanosegundos se utiliza una división entre 1e9d para obtener el tiempo en segundos.  
 > * `1e9d` = operación 10^9, y la "d" es para indicar que el resultado sea de tipo double.  
 
@@ -591,7 +591,7 @@ println("Test Error = " + (1.0 - accuracy))
 val duration = (System.nanoTime - t1) / 1e9d
 ~~~
 > Esta línea se coloca al final del código del cual se desea tomar el tiempo de ejecución.  
-> El tiempo se obtiene como resulado de la resta: tiempo actual en nanosegundos (System.nanoTime) menos el tiempo al iniciar el código (en este caso la variable denominada t1).  
+> El tiempo se obtiene como resultado de la resta: tiempo actual en nanosegundos (System.nanoTime) menos el tiempo al iniciar el código (en este caso la variable denominada t1).  
 > Como el resultado se encuentra en nanosegundos se utiliza una división entre 1e9d para obtener el tiempo en segundos.  
 > * `1e9d` = operación 10^9, y la "d" es para indicar que el resultado sea de tipo double.  
 
