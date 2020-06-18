@@ -26,7 +26,7 @@ Logger.getLogger("org").setLevel(Level.ERROR)
 ~~~
 val dataset = spark.read.option("header","true").option("inferSchema","true").csv("bank-additional-full.csv")
 ~~~
-> Se utilizan la opciones "header" e "inferSchema" para obtener el título y tipo de dato de cada columna en el dataset.  
+> The "header" and "inferSchema" options are used to obtain the title and data type of each column in the dataset.
 
 **4. Import libraries to work with SVM.** 
 ~~~
@@ -163,60 +163,60 @@ val duration = (System.nanoTime - t1) / 1e9d
 <br>
 
 ## Decision Tree 
-**1. Iniciar nueva sesión de spark.**  
+**1. Start a new session of spark.**
 ~~~
 import org.apache.spark.sql.SparkSession
 val spar = SparkSession.builder().getOrCreate()
 ~~~
 
-**2. Código para reducir errores durante la ejecución.**  
+**2. Code to reduce errors during execution.**
 ~~~
 import org.apache.log4j._
 Logger.getLogger("org").setLevel(Level.ERROR)
 ~~~
 
-**3. Cargar el archivo con el dataset.**  
+**3. Upload the file with the dataset.**
 ~~~
 val dataset = spark.read.option("header","true").option("inferSchema","true").csv("bank-additional-full.csv")
 ~~~
-> Se utilizan la opciones "header" e "inferSchema" para obtener el título y tipo de dato de cada columna en el dataset.  
+> The "header" and "inferSchema" options are used to obtain the title and data type of each column in the dataset.
 
-**4. Importar las librerías para trabajar con Decision Tree.**  
+**4. Import libraries to work with Decision Tree.**  
 ~~~
 import org.apache.spark.ml.classification.DecisionTreeClassificationModel
 import org.apache.spark.ml.classification.DecisionTreeClassifier
 import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
 
 ~~~
-> Las primeras dos librerías sí corresponden y son necesarias para la implementación del modelo de Decision Tree, no obstante, la tercera librería se utiliza para evaluar la precisión de los modelos de clasificación, ya sea que se trate de Decision Tree o algún otro algoritmo.  
+> The first two libraries do correspond and are necessary for the implementation of the Decision Tree model, however, the third library is used to evaluate the precision of the classification models, whether it is Decision Tree or some other algorithm.
 
-**5. Transformación para los datos categoricos (etiquetas a clasificar).**  
+**5. Transformation for categorical data (labels to classify)**
 ~~~
 val data = dataset.select(dataset("y").as("label"), $"age",$"duration",$"campaign",$"pdays",$"previous",$"emp_var_rate",$"cons_price_idx",$"cons_conf_idx",$"euribor3m",$"nr_employed")
 ~~~
-> Se seleccionan las columnas del dataframe y se renombra la columna "y" como "label".  
+> The columns of the dataframe are selected and the column "y" is renamed as "label".
 
-**6. Importar las librerias VectorAssembler y Vectors.**  
+**6. Import the VectorAssembler and Vectors libraries.**
 ~~~
 import org.apache.spark.ml.feature.VectorAssembler
 import org.apache.spark.ml.linalg.Vectors
 ~~~
 
-**7. Crear nuevo objeto VectorAssembler.**  
+**7. Create new VectorAssembler object.**  
 ~~~
 val assembler = new VectorAssembler().setInputCols(Array("age","duration","campaign","pdays","previous","emp_var_rate","cons_price_idx","cons_conf_idx","euribor3m","nr_employed")).setOutputCol("features")
 val df = assembler.transform(data)
 ~~~
-> Se crea un nuevo objeto VectorAssembler llamado assembler para guardar el resto de las columnas como features.
-> Se crea la variable df para guardar el dataframe con los cambios anteriores.  
+> A new VectorAssembler object called assembler is created to save the rest of the columns as features.
+> The df variable is created to save the dataframe with the previous changes.
 
-**8. Importar la libreria StringIndexer.**  
+**8. Import the StringIndexer library.**
 ~~~
 import org.apache.spark.ml.feature.StringIndexer
 val labelIndexer = new StringIndexer().setInputCol("label").setOutputCol("indexedLabel").fit(df)
 ~~~
-> Indexamos la columna label y añadimos metadata, esto es para cambiar los valores tipo texto de las etiquetas por valores numéricos.  
-> También se hace un ajuste a todo el dataset para incluir todas las etiquetas en el índice.  
+> The label column is indexed and we add metadata, this is to change the text-type values of the labels by numerical values.
+> An adjustment is also made to the entire dataset to include all the labels in the index.
 
 **9. Importar la librería VectorIndexer.**  
 ~~~
