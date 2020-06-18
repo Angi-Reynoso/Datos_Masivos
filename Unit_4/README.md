@@ -230,23 +230,23 @@ val featureIndexer = new VectorIndexer().setInputCol("features").setOutputCol("i
 ~~~
 val Array(trainingData, testData) = df.randomSplit(Array(0.7, 0.3), seed = 1234L)
 ~~~
-> Se dividen los datos en datos de entrenamiento (0.7) y de prueba (0.3) con randomSplit.  
-> Los datos divididos se guardan como trainingData y testData.  
+> The data is divided into training data (0.7) and test data (0.3) with randomSplit.
+> The divided data is saved as trainingData and testData.
 
 **11. Execution time.**  
 ~~~
 val t1 = System.nanoTime
 ~~~
-> System.nanoTime se utiliza para medir la diferencia de tiempo transcurrido.  
-> Esta línea se coloca antes de que comience el código del cual se desea tomar el tiempo de ejecución.  
+> System.nanoTime is used to measure the difference in elapsed time.
+> This line is placed before the code from which you want to take the runtime begins.
 
 **12. Create model.**  
 ~~~
 val dt = new DecisionTreeClassifier().setLabelCol("indexedLabel").setFeaturesCol("indexedFeatures")
 ~~~
-> Se crea el modelo (dt) y se establecen sus parámetros.  
-> * setLabelCol = columna label indexada indexedLabel.  
-> * setFeaturesCol = columna features indexada indexedFeatures.  
+> The model (dt) is created and its parameters are established.
+> * setLabelCol = indexed label column indexedLabel.
+> * setFeaturesCol = indexed features column indexedFeatures.
 
 **13. Import the IndexToString library.**  
 ~~~
@@ -519,10 +519,10 @@ val t1 = System.nanoTime
 ~~~
 val layers = Array[Int](10, 11, 3, 2)
 ~~~
-> Se especifican las capas para la red neuronal del modelo:  
-> * Capa de entrada de tamaño 10 (características).  
-> * Dos capas intermedias de tamaño 11 y 3.  
-> * Capa de salida de tamaño 2 (clases).  
+> The layers for the neural network of the model are specified:
+> * Size 10 input layer (features).
+> * Two intermediate layers of size 11 and 3.
+> * Size 2 output layer (classes).
 
 **13. Create model.**
 ~~~
